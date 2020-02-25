@@ -1,4 +1,5 @@
 var example_vis = null
+var map_vis = null
 
 Promise.all([
     d3.csv('../dataset/covid_confirmed_02_25_20.csv'),
