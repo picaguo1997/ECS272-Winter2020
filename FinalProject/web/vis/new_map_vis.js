@@ -24,7 +24,7 @@ class NewMapVis {
         this.process_data()
         this.filtered_data = this.filter_data(0)
         this.visualize()
-        this.filter_data(10)
+        this.filter_data(0)
     }
 
     update(timestamp_column) {
@@ -56,6 +56,7 @@ class NewMapVis {
             // add data country names' ISO codes, calculate the logged value
             date_data.forEach(row => {
                 row.id = name_iso_lookup[row.key]
+                row.cases = row.value
                 row.value = Math.log(1 + row.value)
             }); 
 
@@ -117,7 +118,7 @@ class NewMapVis {
         var polygonTemplate = this.polygonSeries.mapPolygons.template;
         polygonTemplate.applyOnClones = true;
         polygonTemplate.togglable = true;
-        polygonTemplate.tooltipText = "{name} : {value}";
+        polygonTemplate.tooltipText = "{name} : {cases}";
         polygonTemplate.nonScalingStroke = true;
         polygonTemplate.strokeOpacity = 0.5;
         polygonTemplate.stroke = am4core.color(this.outline_color)
@@ -150,12 +151,12 @@ class NewMapVis {
         // Hide Antarctica
         this.polygonSeries.exclude = ["AQ"];
 
-        // Small map
-        this.map.smallMap = new am4maps.SmallMap();
-        // Re-position to top right (it defaults to bottom left)
-        this.map.smallMap.align = "right";
-        this.map.smallMap.valign = "top";
-        this.map.smallMap.series.push(this.polygonSeries);
+        // // Small map
+        // this.map.smallMap = new am4maps.SmallMap();
+        // // Re-position to top right (it defaults to bottom left)
+        // this.map.smallMap.align = "right";
+        // this.map.smallMap.valign = "top";
+        // this.map.smallMap.series.push(this.polygonSeries);
 
         // Zoom control
         this.map.zoomControl = new am4maps.ZoomControl();
