@@ -10,13 +10,17 @@
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script> -->
 
-    <!-- MAP LIBRARIES -->
+    <!-- EXTERNAL LIBRARIES -->
+    <!-- mapping -->
     <script src="https://www.amcharts.com/lib/4/core.js"></script>
     <script src="https://www.amcharts.com/lib/4/maps.js"></script>
     <script src="https://www.amcharts.com/lib/4/geodata/worldLow.js"></script>
     <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+    <!-- date -->>
+    <script src="./util/moment.js"></script>
 
     <script src="./main.js"></script>
+    <script src="./util/utils.js"></script>
     <script src="./config/dimensions.js"></script>
     <script src="./config/colors.js"></script>
     <script src="./util/name_iso_lookup.js"></script>
@@ -35,7 +39,7 @@
         <!-- <div id="mapid" style="float: left"></div> -->
         <div id="map_container"></div>
         <div class="slidecontainer">
-            <input class="slider" id="date_slider" type="range" min="1" max="34" value="1" onchange="OnDateSliderChanged(value)">
+            <input class="slider" id="date_slider" type="range" min="0" max="33" value="1" oninput="OnDateSliderChanged(value)">
         </div>
     </div>
 </body>

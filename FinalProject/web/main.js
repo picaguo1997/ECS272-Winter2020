@@ -20,5 +20,5 @@ Promise.all([
 
 
 function OnDateSliderChanged(value){
-    new_map_vis.update()
+    new_map_vis.update(value)
 }
