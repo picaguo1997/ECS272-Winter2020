@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import MapVis from '../js/vis/map_vis.js'
+import PerformantMapVis from '../js/vis/performant_map_vis.js'
 
 export default {
     name: 'Map',
@@ -44,7 +44,7 @@ export default {
             this.map_vis_dimensions.width = document.getElementById('map-content-panel').offsetWidth
             this.map_vis_dimensions.height = document.getElementById('map-content-panel').offsetHeight - 95
 
-            this.map_vis = new MapVis(this.data, 'map-container', this.map_vis_dimensions)
+            this.map_vis = new PerformantMapVis(this.data, 'map-container', this.map_vis_dimensions)
         },
         timeControlSliderChanged(value) {
             if (this.map_vis != null) {
