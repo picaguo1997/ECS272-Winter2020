@@ -2,10 +2,12 @@
   <div id="app">
     <StatusBar title="COVID-19 News & Spread"/>
     <div class="main-content">
-      <Map :data="covid_confirmed" :date="date" style="grid-area: main"/>
-      <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
+      <Map :data="covid_confirmed" :date="date" style="grid-area: map"/>
+      <!--
+        <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       <NewsFeed :data="news" :date="date" style="grid-area: side2"/>
-      <WordCloud :data="null" style="grid-area: side3"/>
+      -->
+      <WordCloud :data="null" style="grid-area: cloud"/>
       <TimeControl :data="null" :date="date" style="grid-area: control"/>
     </div>
   </div>
@@ -18,8 +20,8 @@ import StatusBar from './components/StatusBar.vue'
 import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
-import TwitterFeed from './components/TwitterFeed.vue'
-import NewsFeed from './components/NewsFeed.vue'
+//import TwitterFeed from './components/TwitterFeed.vue'
+//import NewsFeed from './components/NewsFeed.vue'
 
 export default {
   name: 'App',
@@ -28,8 +30,8 @@ export default {
     WordCloud,
     Map,
     TimeControl,
-    TwitterFeed,
-    NewsFeed
+    //TwitterFeed,
+    //NewsFeed
   },
   data() {
     return {
@@ -73,7 +75,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #FFF;
-  margin-top: 60px;
+  margin-top: 0px;
 }
 
 h1 {
@@ -90,17 +92,15 @@ h3 {
 
 .main-content {
   display: grid;
-  grid-template-columns: 1fr 3fr 400px 400px 1fr;
-  grid-template-rows: 25vh 25vh 15vh 20vh;
+  grid-template-columns: 0fr 3fr 3fr 600px 0fr;
+  grid-template-rows: 30vh 45vh 20vh;
   grid-template-areas: 
-  ". main side1 side2 ."
-  ". main side1 side2 ."
-  ". main side3 side3 ."
-  ". control side3 side3 ."
-  ". . . . .";
+  ". main main map ."
+  ". main main cloud ."
+  ". control control control .";
   grid-column-gap: 10px;
   grid-row-gap: 15px;
-  padding: 40px 0 0 0;
+  padding: 0px 0 0 0;
 }
 
 .content-panel {
