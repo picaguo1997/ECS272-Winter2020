@@ -15,9 +15,8 @@ class PerformantMapVis {
         
         this.chart = null
         this.map_options = {
-            //displayMode: 'markers'
+            colorAxis: {colors: ['white', 'blue']}
         }
-
 
         this.start_date = '1/22/20'
         this.end_date = '2/24/20'
