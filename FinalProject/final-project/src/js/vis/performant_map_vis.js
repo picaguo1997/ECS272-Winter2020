@@ -15,7 +15,9 @@ class PerformantMapVis {
         
         this.chart = null
         this.map_options = {
-            colorAxis: {colors: ['white', 'blue']}
+            colorAxis: {minValue: 0, maxValue: 11, colors: ['black', 'red']},
+            backgroundColor: 'transparent',
+            datalessRegionColor: 'black',
         }
 
         this.start_date = '1/22/20'
@@ -66,7 +68,7 @@ class PerformantMapVis {
 
             var date_data_array = []
 
-            date_data_array.push(['Country', 'Log_Cases'])
+            date_data_array.push(['Country', 'Log_Cases', ])
 
             // add data country names' ISO codes, calculate the logged value
             date_data.forEach(row => {
@@ -83,6 +85,8 @@ class PerformantMapVis {
 
     draw_map() {
         var table_data = GoogleCharts.api.visualization.arrayToDataTable(this.filtered_data)
+
+
 
         if (this.chart == null) {
             this.chart = new GoogleCharts.api.visualization.GeoChart(document.getElementById(this.html_root))
