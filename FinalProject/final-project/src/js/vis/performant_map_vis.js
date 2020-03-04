@@ -9,7 +9,15 @@ class PerformantMapVis {
         this.html_root = html_root
         this.dimensions = dimensions
 
+
         this.preprocessed_data = []
+        this.filtered_data = []
+        
+        this.chart = null
+        this.map_options = {
+            //displayMode: 'markers'
+        }
+
 
         this.start_date = '1/22/20'
         this.end_date = '2/24/20'
@@ -19,13 +27,21 @@ class PerformantMapVis {
 
     init() {
         this.preprocess_data()
-        const filtered_data = this.filter_data(0)
+        this.filtered_data = this.filter_data(0)
 
         // setup the map
-        GoogleCharts.load(this.draw_map(filtered_data, this.html_root), {
+        GoogleCharts.load(() => {
+            this.draw_map()
+        }, {
             'packages': ['geochart'],
             'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
         })
+    }
+
+    update(timestamp_column) {
+        this.filtered_data = this.filter_data(timestamp_column)
+
+        this.draw_map()
     }
 
     filter_data(timestamp) {
@@ -66,15 +82,14 @@ class PerformantMapVis {
         })
     }
 
-    draw_map(data, html_root) {
-        return function () {
-            var table_data = GoogleCharts.api.visualization.arrayToDataTable(data)
-            var options = {}
+    draw_map() {
+        var table_data = GoogleCharts.api.visualization.arrayToDataTable(this.filtered_data)
 
-            var chart = new GoogleCharts.api.visualization.GeoChart(document.getElementById(html_root))
-
-            chart.draw(table_data, options)
+        if (this.chart == null) {
+            this.chart = new GoogleCharts.api.visualization.GeoChart(document.getElementById(this.html_root))
         }
+
+        this.chart.draw(table_data, this.map_options)
     }
 }
 
