@@ -15,9 +15,10 @@ class PerformantMapVis {
         
         this.chart = null
         this.map_options = {
-            colorAxis: {minValue: 0, maxValue: 11, colors: ['black', 'red']},
+            colorAxis: {minValue: 0, maxValue: 11, colors: ['white', 'red']},
             backgroundColor: 'transparent',
-            datalessRegionColor: 'black',
+            datalessRegionColor: 'transparent',
+            legend: 'none',
         }
 
         this.start_date = '1/22/20'
@@ -75,8 +76,8 @@ class PerformantMapVis {
                 var id = name_iso_lookup[row.key]
                 //row.cases = row.value
                 var logged_cases = Math.log(1 + row.value)
-
-                date_data_array.push([id, logged_cases])
+                
+                logged_cases > 0 ? date_data_array.push([id, logged_cases]) : null
             });
 
             this.preprocessed_data.push(date_data_array)

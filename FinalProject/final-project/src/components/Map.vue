@@ -56,5 +56,8 @@ export default {
 </script>
 
 <style>
-
+    #map-container path {
+        stroke-width:0.1; /* control the countries borders width */
+        stroke:#6699cc; /* choose a color for the border */
+    }
 </style>
