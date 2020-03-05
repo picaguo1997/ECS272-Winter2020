@@ -2,13 +2,19 @@
   <div id="app">
     <StatusBar title="COVID-19 News & Spread"/>
     <div class="main-content">
-      <Map :data="covid_confirmed" :date="date" style="grid-area: map"/>
+      <Map :data="covid_confirmed" :date="hover_date" style="grid-area: map"/>
       <!--
-        <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
+      <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       <NewsFeed :data="news" :date="date" style="grid-area: side2"/>
       -->
       <WordCloud :data="null" style="grid-area: cloud"/>
-      <TimeControl :data="null" :date="date" style="grid-area: control"/>
+      <TimeControl 
+      :data_confirmed="covid_confirmed" 
+      :data_deaths="covid_deaths" 
+      :data_recovered="covid_recovered"
+      @onselected="(date) => { this.selected_date = date }"
+      @onhover="(date) => { this.hover_date = date }"
+      style="grid-area: control"/>
     </div>
   </div>
 </template>
@@ -35,15 +41,23 @@ export default {
   },
   data() {
     return {
+      selected_date: null,
+      hover_date: null,
       twitter: null,
       news: null,
       covid_confirmed: null,
+      covid_deaths: null,
+      covid_recovered: null,
+    }
+  },
+  watch: {
+    date() {
+      console.log(this.date)
     }
   },
   created() {
-    this.date = new Date()
-    this.date.setUTCMonth(1, 20)
-    console.log(this.date)
+    this.selected_date = null
+    this.hover_date = null
 
     d3.json('/data/twitter.json')
       .then((data) => {
@@ -58,6 +72,14 @@ export default {
     d3.csv('/data/covid_confirmed_02_25_20.csv')
       .then((data) => {
         this.covid_confirmed = data
+      })
+    d3.csv('/data/covid_deaths_02_25_20.csv')
+      .then((data) => {
+        this.covid_deaths = data
+      })
+    d3.csv('/data/covid_recovered_02_25_20.csv')
+      .then((data) => {
+        this.covid_recovered = data
       })
   }
 }
