@@ -37,12 +37,13 @@ export default {
   },
   methods: {
     init() {
+      var self = this
+
       const x = this.getTimePoints(this.data_confirmed, 'x')
       const y_confirmed = this.getDataPoints(this.data_confirmed, 'confirmed')
       const y_deaths = this.getDataPoints(this.data_deaths, 'deaths')
       const y_recovered = this.getDataPoints(this.data_recovered, 'recovered')
 
-      console.log(y_confirmed)
 
       this.width = document.getElementById('time-control-chart').offsetWidth
       this.height = document.getElementById('time-control-chart').offsetHeight
@@ -90,36 +91,14 @@ export default {
               }
           },
           tooltip: {
-            position: (d) => {
-              // TODO: Find good hover method
-              this.$emit('onhover', d[0].x)
-              return {top: 0, left: 0};
+            position: function(d) {
+              var position = c3.chart.internal.fn.tooltipPosition.apply(this, arguments);
+
+              self.$emit('onhover', d[0].x)
+              return position;
             }
-          },
-          onmouseover: () => {
-            console.log('mover')
           }
       })
-
-      // TODO: Find good hover method
-      // var self = this
-      // this.chart.internal.main.on('mousemove', function() {
-      //     var coords = d3.mouse(this);
-      //     var xCoord = coords[0];
-      //     var xValue = self.chart.internal.x.invert(xCoord)
-      //     xValue.setMilliseconds(0)
-      //     xValue.setSeconds(0)
-      //     xValue.setMinutes(0)
-      //     xValue.setHours(0)
-      //     if (xValue != self.hover_date) {
-      //       console.log(xValue)
-      //       console.log(self.hover_date)
-      //       self.hover_date = xValue
-      //     }
-          
-      // });
-
-      // console.log(this.chart)
     },
 
     getTimePoints(data, label) {
