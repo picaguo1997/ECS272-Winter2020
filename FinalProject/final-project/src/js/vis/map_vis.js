@@ -1,5 +1,5 @@
 import { GoogleCharts } from 'google-charts';
-import name_iso_lookup from '../util/name_iso_lookup'
+import getIsoCode from '../util/name_iso_lookup'
 import * as d3 from 'd3'
 
 class MapVis {
@@ -21,7 +21,10 @@ class MapVis {
             datalessRegionColor: 'transparent',
             legend: 'none',
             width: dimensions.width,
-            height: dimensions.height
+            height: dimensions.height,
+            tooltip: {
+                trigger: 'none'
+            }
         }
 
         this.ready = false
@@ -35,9 +38,9 @@ class MapVis {
         })
     }
 
-    init(data, date) {
+    async init(data, date) {
         this.data = data
-        this.preprocess_data()
+        await this.preprocess_data()
         this.filtered_data = this.filter_data(date)
         this.ready = true
     }
@@ -60,7 +63,7 @@ class MapVis {
         return this.preprocessed_data[timestamp]
     }
 
-    preprocess_data() {
+    async preprocess_data() {
         this.preprocessed_data = {}
         var entry = this.data[0]
 
@@ -75,6 +78,13 @@ class MapVis {
             this.preprocessed_data[new Date(col)] = []
 
             count += 1
+        }
+
+        var iso_codes = {}
+        for (var e of this.data) {
+            var lat = parseFloat(e['Lat'])
+            var long = parseFloat(e['Long'])
+            iso_codes[e['Country/Region']] = (await getIsoCode(lat, long))
         }
 
         for(var date in this.preprocessed_data) {
@@ -94,7 +104,7 @@ class MapVis {
                 var date_data_array = [['Country', 'Log_Cases']]
                 // add data country names' ISO codes, calculate the logged value
                 date_data.forEach(row => {
-                    var id = name_iso_lookup[row.key]
+                    var id = iso_codes[row.key]
                     //row.cases = row.value
                     var logged_cases = Math.log(1 + row.value)
                     
@@ -103,50 +113,10 @@ class MapVis {
 
                 this.preprocessed_data[date] = date_data_array
         }
-
-        //######################################################
-
-        /*
-
-        // get all the dates in the dataset
-        var dates = getDates(this.start_date, this.end_date)
-
-        // for each date, create an array entry
-        dates.forEach(date => {
-
-            // group incidents in countries at a specific date
-            var date_data = d3.nest()
-                .key(d => { return d['Country/Region'] })
-                .rollup(row => {
-                    return d3.sum(row, d => {
-                        return d[date]
-                    })
-                })
-                .entries(this.data)
-
-            var date_data_array = []
-
-            date_data_array.push(['Country', 'Log_Cases', ])
-
-            // add data country names' ISO codes, calculate the logged value
-            date_data.forEach(row => {
-                var id = name_iso_lookup[row.key]
-                //row.cases = row.value
-                var logged_cases = Math.log(1 + row.value)
-                
-                logged_cases > 0 ? date_data_array.push([id, logged_cases]) : null
-            });
-
-            this.preprocessed_data.push(date_data_array)
-        })
-
-        */
     }
 
     draw_map() {
         var table_data = GoogleCharts.api.visualization.arrayToDataTable(this.filtered_data)
-
-
 
         if (this.chart == null) {
             this.chart = new GoogleCharts.api.visualization.GeoChart(document.getElementById(this.html_root))

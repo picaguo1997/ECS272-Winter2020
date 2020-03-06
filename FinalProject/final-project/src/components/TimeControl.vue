@@ -6,7 +6,7 @@
 
 <script>
 import 'c3/c3.css';
-//import * as d3 from 'd3'
+import * as d3 from 'd3'
 import * as c3 from 'c3'
 
 export default {
@@ -15,6 +15,7 @@ export default {
     data_confirmed: Array,
     data_deaths: Array,
     data_recovered: Array,
+    data_news: Array,
   },
   data() {
       return {
@@ -25,7 +26,7 @@ export default {
   },
   computed: {
     dataReady() {
-      return (this.data_confirmed != null && this.data_deaths != null && this.data_recovered != null)
+      return (this.data_confirmed != null && this.data_deaths != null && this.data_recovered != null && this.data_news != null)
     }
   },
   watch: {
@@ -39,10 +40,15 @@ export default {
     init() {
       var self = this
 
-      const x = this.getTimePoints(this.data_confirmed, 'x')
-      const y_confirmed = this.getDataPoints(this.data_confirmed, 'confirmed')
-      const y_deaths = this.getDataPoints(this.data_deaths, 'deaths')
-      const y_recovered = this.getDataPoints(this.data_recovered, 'recovered')
+      const x1 = this.getDates(this.getNewsTimestamps(this.data_news), 'x1', new Date('2020/01/01'))
+      const x2 = this.getDates(this.getInfectionTimestamps(this.data_confirmed), 'x2', new Date('2020/01/01'))
+
+      const y_news = this.getNewsDataPoints(this.data_news, 'news', new Date('2020/01/01'))
+      console.log(y_news)
+
+      const y_confirmed = this.getInfectionDataPoints(this.data_confirmed, 'confirmed')
+      const y_deaths = this.getInfectionDataPoints(this.data_deaths, 'deaths')
+      const y_recovered = this.getInfectionDataPoints(this.data_recovered, 'recovered')
 
 
       this.width = document.getElementById('time-control-chart').offsetWidth
@@ -51,7 +57,7 @@ export default {
       this.chart = c3.generate({
           bindto: '#time-control-chart',
           padding: {
-            top: 10
+            top: 10,
           },
           size: {
             height: this.height,
@@ -68,13 +74,32 @@ export default {
                   this.$emit('onselected', d.x)
                 }
               },
-              x: 'x',
+              xs: {
+                news: 'x1',
+                confirmed: 'x2',
+                deaths: 'x2',
+                recovered: 'x2',
+              },
+              axes: {
+                news: 'y2',
+                confirmed: 'y',
+                deaths: 'y',
+                recovered: 'y'
+              },
               columns: [
-                  x,
+                  x1,
+                  x2,
                   y_confirmed,
                   y_deaths,
                   y_recovered,
-              ],
+                  y_news
+              ],         
+              types: {
+                news: 'bar',
+                confirmed: 'spline',
+                deaths: 'spline',
+                recovered: 'spline'
+              },
           },
           axis: {
               x: {
@@ -86,23 +111,60 @@ export default {
               y: {
                 min: 0,
                 tick: {
-                  count: 3
+                  count: 3,
+                  format: d3.format('d')
                 }
+              },
+              y2: {
+                show: true,
               }
           },
           tooltip: {
             position: function(d) {
               var position = c3.chart.internal.fn.tooltipPosition.apply(this, arguments);
 
-              self.$emit('onhover', d[0].x)
+              if (self.hover_date == null || self.hover_date.getTime() != d[0].x.getTime()) {
+                self.hover_date = d[0].x
+                self.$emit('onhover', d[0].x)
+              }
+
               return position;
             }
           }
       })
     },
 
-    getTimePoints(data, label) {
+    getDates(timestamps, label, after) {
+      timestamps = Array.from(timestamps)
+      timestamps.sort()
+
       var result = [label]
+      for(var timestamp of timestamps) {
+
+        var date = new Date(timestamp)
+
+        if (date.getTime() < after.getTime()) {
+          continue
+        }
+
+        result.push(date)
+      }
+
+      return result
+    },
+
+    getNewsTimestamps(data) {
+      var timestamps = new Set()
+
+      for(var article of data){
+        timestamps.add(new Date(article['time-stamp'].split(',')[0]).getTime())
+      }
+
+      return timestamps
+    },
+
+    getInfectionTimestamps(data) {
+      var timestamps = new Set()
       var entry = data[0]
 
       // Data starts at 4th col
@@ -113,15 +175,44 @@ export default {
           count += 1
           continue
         }
-        result.push(new Date(col))
+        timestamps.add(new Date(col).getTime())
 
         count += 1
+      }
+
+      return timestamps
+    },
+
+    getNewsDataPoints(data, label, after) {
+      var timestamps = {}
+
+      console.log(label)
+
+      for(var article of data) {
+        var timestamp = new Date(article['time-stamp'].split(',')[0]).getTime()
+
+        if (timestamp < after.getTime()) {
+          continue
+        }
+
+        if (typeof timestamps[timestamp] == 'undefined') {
+          timestamps[timestamp] = 0
+        }
+
+        timestamps[timestamp] += 1
+      }
+
+      var sorted = Object.keys(timestamps).sort()
+      var result = [label]
+
+      for(var key of sorted) {
+        result.push(timestamps[key])
       }
 
       return result
     },
 
-    getDataPoints(data, label) {
+    getInfectionDataPoints(data, label) {
       var result = [label]
 
       // Data starts at 4th col
@@ -151,7 +242,9 @@ export default {
 </script>
 
 <style>
-
+.c3 .c3-chart-bars path {
+  fill-opacity: 0.5;
+}
 .c3 .c3-axis path, .c3 .c3-axis line {
   stroke: #fff;
 }

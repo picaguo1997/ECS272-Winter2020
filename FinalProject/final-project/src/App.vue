@@ -12,6 +12,7 @@
       :data_confirmed="covid_confirmed" 
       :data_deaths="covid_deaths" 
       :data_recovered="covid_recovered"
+      :data_news="news"
       @onselected="(date) => { this.selected_date = date }"
       @onhover="(date) => { this.hover_date = date }"
       style="grid-area: control"/>
@@ -69,15 +70,15 @@ export default {
         this.news = data
       })
 
-    d3.csv('/data/covid_confirmed_02_25_20.csv')
+    d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
       .then((data) => {
         this.covid_confirmed = data
       })
-    d3.csv('/data/covid_deaths_02_25_20.csv')
+    d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv')
       .then((data) => {
         this.covid_deaths = data
       })
-    d3.csv('/data/covid_recovered_02_25_20.csv')
+    d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
       .then((data) => {
         this.covid_recovered = data
       })
