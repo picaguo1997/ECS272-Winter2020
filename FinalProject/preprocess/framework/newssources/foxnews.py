@@ -11,7 +11,8 @@ class FoxNews(NewsSource):
     def filter_links(self, links):
         return set(filter(lambda l: 
                           ('/category/' not in l) and
-                          ('.print' not in l)
+                          ('.print' not in l) and
+                          ('/health?' not in l)
                           
                           , links))
     
@@ -21,7 +22,11 @@ class FoxNews(NewsSource):
         articles = []
         
         for i, URL in enumerate(self.links):
-            r = urllib.request.urlopen(URL) 
+            try:
+                r = urllib.request.urlopen(URL)
+            except:
+                print('Skipping:',URL)
+                continue 
             sll = HTMLParser(r.read())
             
             print(i+1,'/',len(self.links),URL)

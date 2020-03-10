@@ -26,6 +26,7 @@ class ABCNews(NewsSource):
             try:
                 r = urllib.request.urlopen(URL)
             except:
+                print('Skipping:',URL)
                 continue
             sll = HTMLParser(r.read())
             

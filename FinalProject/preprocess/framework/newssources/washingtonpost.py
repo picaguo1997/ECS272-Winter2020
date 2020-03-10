@@ -1,5 +1,8 @@
 from ..newssource import NewsSource
-
+import urllib
+from selectolax.parser import HTMLParser
+from dateutil.parser import parse
+from bs4 import BeautifulSoup 
 
 
 class WashingtonPost(NewsSource):
@@ -10,14 +13,15 @@ class WashingtonPost(NewsSource):
     def scrape(self):
         super().scrape()
         articles = self.__wp_general_article()
-        live_data = self.__wp_live_update()
-        self.output = articles + live_data
+        #live_data = self.__wp_live_update()
+        #self.output = articles + live_data
+        self.output = articles
         
     #WP's live-update article seems structured differently since it is a trail of small posts.
     def __wp_live_update(self):
         URL = "https://www.washingtonpost.com/world/asia_pacific/coronavirus-china-live-updates/2020/02/21/81d2aa50-543e-11ea-b119-4faabac6674f_story.html"
-        r = requests.get(URL) 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        r = urllib.request.urlopen(URL)
+        soup = BeautifulSoup(r.read(), 'html.parser')
 
         #Seems to be the only consistent part for every article?
         main_article = soup.find('div', attrs = {'class':'article-body'})
@@ -44,9 +48,15 @@ class WashingtonPost(NewsSource):
     
     def __wp_general_article(self):
         articles = []
-        for URL in self.links:
-            r = requests.get(URL) 
-            soup = BeautifulSoup(r.content, 'html.parser')
+        for i, URL in enumerate(self.links):
+            try:
+                r = urllib.request.urlopen(URL)
+            except:
+                print('Skipping:',URL)
+                continue 
+            soup = BeautifulSoup(r.read(), 'html.parser')
+
+            print(i+1,'/',len(self.links),URL)
 
             article_header = soup.find('header', attrs = {'data-qa':'main-full'})
             main_article = soup.find('div', attrs = {'class':'article-body'})

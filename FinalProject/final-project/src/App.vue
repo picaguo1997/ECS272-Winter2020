@@ -7,7 +7,7 @@
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       <NewsFeed :data="news" :date="date" style="grid-area: side2"/>
       -->
-      <WordCloud :data="null" style="grid-area: cloud"/>
+      <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl 
       :data_confirmed="covid_confirmed" 
       :data_deaths="covid_deaths" 
@@ -24,7 +24,7 @@
 import * as d3 from 'd3'
 
 import StatusBar from './components/StatusBar.vue'
-import WordCloud from './components/WordCloud.vue'
+//import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
@@ -34,7 +34,7 @@ export default {
   name: 'App',
   components: {
     StatusBar,
-    WordCloud,
+    //WordCloud,
     Map,
     TimeControl,
     //TwitterFeed,
@@ -115,12 +115,12 @@ h3 {
 
 .main-content {
   display: grid;
-  grid-template-columns: 0fr 3fr 3fr 600px 0fr;
-  grid-template-rows: 30vh 45vh 20vh;
+  grid-template-columns: 0fr 1.5fr 1.5fr 0.75fr 0fr;
+  grid-template-rows: 35vh 35vh 25vh;
   grid-template-areas: 
-  ". main main map ."
+  ". main main . ."
   ". main main cloud ."
-  ". control control control .";
+  ". control control map .";
   grid-column-gap: 10px;
   grid-row-gap: 15px;
   padding: 0px 0 0 0;
