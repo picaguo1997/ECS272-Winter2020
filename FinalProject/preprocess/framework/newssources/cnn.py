@@ -13,7 +13,9 @@ class CNN(NewsSource):
         return set(filter(lambda l: 
                           ('/videos/' not in l) and
                           ('/live-news/' not in l) and
-                          ('/specials/' not in l)
+                          ('/specials/' not in l) and 
+                          ('/audio/' not in l) and
+                          ('/video/' not in l)
                           , links))
     
        

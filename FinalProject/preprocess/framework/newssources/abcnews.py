@@ -14,7 +14,9 @@ class ABCNews(NewsSource):
                           ('/alerts/' not in l) and
                           ('/video/' not in l) and
                           ('/photos/' not in l) and
-                          ('/Coronavirus' not in l)
+                          ('/Coronavirus' not in l) and
+                          ('/coronavirus?' not in l) and
+                          ('preview.abcnews.go.com' not in l)
                           , links))
     
        

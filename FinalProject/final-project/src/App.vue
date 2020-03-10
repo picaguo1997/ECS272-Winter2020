@@ -116,7 +116,7 @@ h3 {
 .main-content {
   display: grid;
   grid-template-columns: 0fr 1.5fr 1.5fr 0.75fr 0fr;
-  grid-template-rows: 35vh 35vh 25vh;
+  grid-template-rows: 0 0 95vh;
   grid-template-areas: 
   ". main main . ."
   ". main main cloud ."

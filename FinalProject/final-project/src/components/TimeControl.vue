@@ -110,6 +110,7 @@ export default {
               },
               y: {
                 min: 0,
+                padding: 0,
                 tick: {
                   count: 3,
                   format: d3.format('d')
