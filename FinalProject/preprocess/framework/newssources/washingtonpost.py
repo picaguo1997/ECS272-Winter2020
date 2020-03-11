@@ -11,10 +11,45 @@ class WashingtonPost(NewsSource):
         super().__init__("Washington Post", seed_url, crawler)
         
     def scrape(self):
-        super().scrape()
-        articles = self.__wp_general_article()
+        #super().scrape()
+        #articles = self.__wp_general_article()
         #live_data = self.__wp_live_update()
         #self.output = articles + live_data
+        #self.output = articles
+        self._scrape()
+
+    def _scrape(self):
+        super().scrape()
+        articles = []
+        
+        for i, URL in enumerate(self.links):
+            try:
+                r = urllib.request.urlopen(URL)
+            
+                sll = HTMLParser(r.read())
+                
+                print(i+1,'/',len(self.links),URL)
+                
+                headline = sll.css_first('meta[property="og:title"]').attributes['content']
+                main_article = sll.css_first('.article-body')
+                timestamp = parse(sll.css_first('meta[name="last_updated_date"]').attributes['content'])
+                
+                story = {}
+                story['content'] = []
+                story['headline'] = headline
+                story['time-stamp'] = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+                story['url'] = URL
+                story['journal'] = self.journal
+                
+                
+                for paragraph in main_article.css('p'):
+                    story['content'].append(paragraph.text(deep=True, separator=''))
+                
+                articles.append(story)
+            except:
+                print('Skipping:',URL)
+                continue
+            
         self.output = articles
         
     #WP's live-update article seems structured differently since it is a trail of small posts.
@@ -51,33 +86,34 @@ class WashingtonPost(NewsSource):
         for i, URL in enumerate(self.links):
             try:
                 r = urllib.request.urlopen(URL)
+             
+                soup = BeautifulSoup(r.read(), 'html.parser')
+
+                print(i+1,'/',len(self.links),URL)
+
+                article_header = soup.find('header', attrs = {'data-qa':'main-full'})
+                main_article = soup.find('div', attrs = {'class':'article-body'})
+                teaser = soup.find('div', attrs ={'class':'teaser-content'}).find('section')
+                body = soup.find('div', attrs ={'class':'remainder-content'}).find('section')
+                timestep = soup.find('div', attrs={'class':'display-date'}).text
+
+                story = {}
+                story['content'] = []
+                story['headline'] = article_header.find('h1', attrs={'data-qa':'headline'}).text
+                story['time-stamp'] = timestep
+                story['journal'] = self.journal
+
+                for teaser_content in teaser.findAll('div'):
+                    if teaser_content.find('p'):
+                        story['content'].append(teaser_content.find('p').text)
+
+                for body_content in body.findAll('div'):
+                    if body_content.find('p'):
+                        story['content'].append(body_content.find('p').text)
+
+                articles.append(story)
             except:
                 print('Skipping:',URL)
-                continue 
-            soup = BeautifulSoup(r.read(), 'html.parser')
-
-            print(i+1,'/',len(self.links),URL)
-
-            article_header = soup.find('header', attrs = {'data-qa':'main-full'})
-            main_article = soup.find('div', attrs = {'class':'article-body'})
-            teaser = soup.find('div', attrs ={'class':'teaser-content'}).find('section')
-            body = soup.find('div', attrs ={'class':'remainder-content'}).find('section')
-            timestep = soup.find('div', attrs={'class':'display-date'}).text
-
-            story = {}
-            story['content'] = []
-            story['headline'] = article_header.find('h1', attrs={'data-qa':'headline'}).text
-            story['time-stamp'] = timestep
-            story['journal'] = self.journal
-
-            for teaser_content in teaser.findAll('div'):
-                if teaser_content.find('p'):
-                     story['content'].append(teaser_content.find('p').text)
-
-            for body_content in body.findAll('div'):
-                if body_content.find('p'):
-                     story['content'].append(body_content.find('p').text)
-
-            articles.append(story)
+                continue
 
         return articles

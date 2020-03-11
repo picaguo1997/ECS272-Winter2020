@@ -22,28 +22,29 @@ class NewYorkTimes(NewsSource):
         for i, URL in enumerate(self.links):
             try:
                 r = urllib.request.urlopen(URL)
+            
+                sll = HTMLParser(r.read())
+                
+                print(i+1,'/',len(self.links),URL)
+                
+                headline = sll.css_first('meta[property="og:title"]').attributes['content']
+                main_article = sll.css_first('section[name="articleBody"]')
+                timestamp = parse(sll.css_first('meta[property="article:modified"]').attributes['content'])
+                
+                story = {}
+                story['content'] = []
+                story['headline'] = headline
+                story['time-stamp'] = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+                story['url'] = URL
+                story['journal'] = self.journal
+                
+                
+                for paragraph in main_article.css('p'):
+                    story['content'].append(paragraph.text(deep=True, separator=''))
+                
+                articles.append(story)
             except:
                 print('Skipping:',URL)
                 continue 
-            sll = HTMLParser(r.read())
-            
-            print(i+1,'/',len(self.links),URL)
-            
-            headline = sll.css_first('meta[property="og:title"]').attributes['content']
-            main_article = sll.css_first('section[name="articleBody"]')
-            timestamp = parse(sll.css_first('meta[property="article:modified"]').attributes['content'])
-            
-            story = {}
-            story['content'] = []
-            story['headline'] = headline
-            story['time-stamp'] = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
-            story['url'] = URL
-            story['journal'] = self.journal
-            
-            
-            for paragraph in main_article.css('p'):
-                story['content'].append(paragraph.text(deep=True, separator=''))
-            
-            articles.append(story)
             
         self.output = articles
