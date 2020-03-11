@@ -1,0 +1,1 @@
+- Map does not render on first timecontrol hover

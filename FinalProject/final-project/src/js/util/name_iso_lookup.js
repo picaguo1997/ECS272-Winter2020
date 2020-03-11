@@ -1,42 +1,16 @@
-var name_iso_lookup = {
-    'Mainland China' : 'CN',
-    'Thailand' : 'TH',
-    'Japan' : 'JP',
-    'South Korea': 'KR',
-    'Taiwan' : 'TW',
-    'US' : 'US',
-    'Macau' : 'MO',
-    'Hong Kong' : 'HK',
-    'Singapore' : 'SG',
-    'Vietnam' : 'VT',
-    'France' : 'FR',
-    'Nepal' : 'NP',
-    'Malaysia' : 'MY',
-    'Canada' : 'CA',
-    'Australia' : 'AU',
-    'Cambodia' : 'KH',
-    'Sri Lanka' : 'LK',
-    'Germany' : 'DE',
-    'Finland' : 'FI',
-    'United Arab Emirates' : 'AE',
-    'Philippines' : 'PH',
-    'India' : 'IN',
-    'Italy' : 'IT',
-    'UK' : 'UK',
-    'Russia' : 'RU',
-    'Sweden' : 'SE',
-    'Spain' : 'ES',
-    'Belgium' : 'BE',
-    'Others' : '',
-    'Egypt' : 'EG',
-    'Iran' : 'IR',
-    'Israel' : 'IL',
-    'Lebanon' : 'LB',
-    'Iraq' : 'IQ',
-    'Oman' : 'OM',
-    'Afghanistan' : 'AF',
-    'Bahrain' : 'BH',
-    'Kuwait' : 'KW',
+import * as codegrid from 'codegrid-js'
+
+var grid = codegrid.CodeGrid('/data/tiles/')
+
+function getIsoCode(lat, long) {
+    return new Promise((resolve, reject) => {
+        grid.getCode(lat, long, (error, code) => {
+            if (error != null) {
+                reject(error)
+            }
+            resolve(code)
+        })
+    })
 }
 
-module.exports = name_iso_lookup
+export default getIsoCode

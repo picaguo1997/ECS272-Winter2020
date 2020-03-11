@@ -18,9 +18,9 @@ export default {
     overflow: hidden;
     background-color: #242A3D;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: 10px;
+    left: 15px;
+    width: 400px;
     -webkit-box-shadow: 0px 0px 8px 1px rgba(0,0,0,0.5); 
     box-shadow: 0px 0px 8px 1px rgba(0,0,0,0.5);
 }
