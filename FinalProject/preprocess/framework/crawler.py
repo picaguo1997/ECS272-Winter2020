@@ -46,6 +46,8 @@ class Crawler(object):
         urls = set()
 
         domain_name = urlparse(url).netloc
+        domain_list = ['news.cgtn.com', 'newsus.cgtn.com', 'newsaf.cgtn.com', 'newseu.cgtn.com']
+        domain_list.append(domain_name)
 
         try:
             headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
@@ -67,22 +69,22 @@ class Crawler(object):
             parsed_href = urlparse(href) # This removes the query portion (e.g. /story?id=12345) resulting in the final string being /story.
             href = parsed_href.scheme + "://" + parsed_href.netloc + parsed_href.path + "?" + parsed_href.query #added query back (TODO: robust?)
 
+
             if not self.is_valid(href):
                 # not a valid URL
+                print("why")
                 continue
             if href in self.internal_urls:
                 # already in the set
                 continue
-            if domain_name not in href:
+            if not (any(domain in href for domain in domain_list)):
                 # external link
     #             if href not in external_urls:
     #                 external_urls.add(href)
                 continue
 
             a_tag_text = a_tag.text(deep=True, separator='', strip=False)
-            # print(a_tag_text)
-            if not (any(word in a_tag_text for word in self.keywords)):
-            #if not (any(word in a_tag_text for word in self.keywords) or any(word in href for word in self.keywords)):
+            if not (any(word in a_tag_text for word in self.keywords) or any(word in href for word in self.keywords)):
                 #check if A tag text OR A tag href doesn't contain keyword
                 continue
 
