@@ -47,13 +47,13 @@ class Crawler(object):
 
         domain_name = urlparse(url).netloc
 
-
         try:
             headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
             req = urllib.request.Request(url=url, headers=headers)
             r = urllib.request.urlopen(req)
             sll =  HTMLParser(r.read())
         except:
+            print("exception fail")
             return urls
 
         for a_tag in sll.css("a"):
@@ -80,11 +80,13 @@ class Crawler(object):
                 continue
 
             a_tag_text = a_tag.text(deep=True, separator='', strip=False)
-            #if not any(word in a_tag_text for word in self.keywords):
-            if not (any(word in a_tag_text for word in self.keywords) or any(word in href for word in self.keywords)):
+            # print(a_tag_text)
+            if not (any(word in a_tag_text for word in self.keywords)):
+            #if not (any(word in a_tag_text for word in self.keywords) or any(word in href for word in self.keywords)):
                 #check if A tag text OR A tag href doesn't contain keyword
                 continue
 
+            # print(a_tag_text)
             urls.add(href)
             self.internal_urls.add(href)
         return urls
