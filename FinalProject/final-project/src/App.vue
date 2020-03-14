@@ -1,19 +1,21 @@
 <template>
   <div id="app">
     <StatusBar title="COVID-19 News & Spread"/>
-    <div class="main-content">
+    <div id="main" class="main-content">
       <Map :data="covid_confirmed" :date="hover_date" style="grid-area: map"/>
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
-      <NewsFeed :data="news" :date="date" style="grid-area: side2"/>
       -->
+      <NewsFeed id='news-feed' :data="news" :date="hover_date" style="grid-area: side"/>
+      
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl 
       :data_confirmed="covid_confirmed" 
       :data_deaths="covid_deaths" 
       :data_recovered="covid_recovered"
       :data_news="news"
-      @onselected="(date) => { this.selected_date = date }"
+      @onselected="onTimeControlDateSelected"
+      @onunselected="onTimeControlDateUnSelected"
       @onhover="(date) => { this.hover_date = date }"
       style="grid-area: control"/>
     </div>
@@ -28,7 +30,7 @@ import StatusBar from './components/StatusBar.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
-//import NewsFeed from './components/NewsFeed.vue'
+import NewsFeed from './components/NewsFeed.vue'
 
 export default {
   name: 'App',
@@ -38,7 +40,7 @@ export default {
     Map,
     TimeControl,
     //TwitterFeed,
-    //NewsFeed
+    NewsFeed
   },
   data() {
     return {
@@ -82,6 +84,17 @@ export default {
       .then((data) => {
         this.covid_recovered = data
       })
+  },
+  methods: {
+    onTimeControlDateSelected(date) {
+      this.selected_date = date
+      document.getElementById('main').classList.add('main-content-collapsed')
+      document.getElementById('news-feed').style.display = 'none'
+    },
+    onTimeControlDateUnSelected() {
+      document.getElementById('main').classList.remove('main-content-collapsed')
+      document.getElementById('news-feed').style.display = 'block'
+    }
   }
 }
 </script>
@@ -113,17 +126,30 @@ h3 {
   font-size: 1.2em;
 }
 
+#main {
+  transition: all 2s linear;
+  -webkit-transition: all 2s linear;
+  -moz-transition: all 2s linear;
+}
+
 .main-content {
   display: grid;
-  grid-template-columns: 0fr 1.5fr 1.5fr 0.75fr 0fr;
-  grid-template-rows: 0 0 95vh;
+  grid-template-columns: 0fr 1.5fr 1.5fr 600px 0fr;
+  grid-template-rows: 60vh 34vh;
   grid-template-areas: 
-  ". main main . ."
-  ". main main cloud ."
+  ". control control side ."
   ". control control map .";
   grid-column-gap: 10px;
   grid-row-gap: 15px;
   padding: 0px 0 0 0;
+}
+
+.main-content-collapsed {
+  grid-template-areas: 
+  ". main main main ."
+  ". main main main ."
+  ". control control map .";
+  grid-template-rows: 30vh 30vh 34vh;
 }
 
 .content-panel {

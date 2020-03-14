@@ -21,7 +21,9 @@ export default {
       return {
           chart: null,
           selected_date: null,
-          hover_date: null
+          hover_date: null,
+          width: 0,
+          height: 0,
       }
   },
   computed: {
@@ -61,7 +63,7 @@ export default {
           },
           size: {
             height: this.height,
-            width: this.width,
+            //width: this.width,
           },
           data: {
               selection: {
@@ -70,9 +72,14 @@ export default {
                 multiple: false,
               },
               onselected: (d) => {
-                if (d.x != this.selected_date) {
+                if (this.selected_date == null || d.x.getTime() != this.selected_date.getTime()) {
+                  this.selected_date = d.x
                   this.$emit('onselected', d.x)
                 }
+              },
+              onunselected: () => {
+                this.selected_date = null
+                this.$emit('onunselected')
               },
               xs: {
                 news: 'x1',
@@ -133,6 +140,18 @@ export default {
             }
           }
       })
+
+      console.log(this.chart)
+
+      const container = document.getElementById('time-control-chart')
+      
+      new ResizeObserver(() => {
+          this.chart.internal.selectChart.style('max-height', 'none')
+          this.height = document.getElementById('time-control-chart').offsetHeight
+          this.chart.resize({height: this.height})
+      }).observe(container)
+
+      
     },
 
     getDates(timestamps, label, after) {
@@ -243,6 +262,8 @@ export default {
 </script>
 
 <style>
+
+
 .c3 .c3-chart-bars path {
   fill-opacity: 0.5;
 }

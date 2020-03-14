@@ -43,8 +43,8 @@ export default {
     },
     methods: {
         init() {
-            this.map_vis_dimensions.width = document.getElementById('map-content-panel').offsetWidth
-            this.map_vis_dimensions.height = document.getElementById('map-content-panel').offsetHeight - 30
+            this.map_vis_dimensions.width = document.getElementById('map-content-panel').offsetWidth - 30
+            this.map_vis_dimensions.height = document.getElementById('map-content-panel').offsetHeight
 
             this.map_vis = new MapVis('map-container', this.map_vis_dimensions)
         },

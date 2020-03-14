@@ -2,7 +2,7 @@
   <div class="content-panel">
       <div style="overflow: hidden; height:100%">
           <h3>News Feed</h3>
-          <div class="scroll">
+          <div v-if="data != null && date != null" class="scroll">
               <NewsArticle v-for="article in getNews(null)" :key="article.url" :data="article" />
           </div>
       </div>
