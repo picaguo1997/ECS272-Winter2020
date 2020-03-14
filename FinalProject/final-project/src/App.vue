@@ -2,11 +2,20 @@
   <div id="app">
     <StatusBar title="COVID-19 News & Spread"/>
     <div class="main-content">
-      <Map :data="covid_confirmed" :date="date" style="grid-area: main"/>
+      <Map :data="covid_confirmed" :date="hover_date" style="grid-area: map"/>
+      <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       <NewsFeed :data="news" :date="date" style="grid-area: side2"/>
-      <WordCloud :data="null" style="grid-area: side3"/>
-      <TimeControl :data="null" :date="date" style="grid-area: control"/>
+      -->
+      <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
+      <TimeControl 
+      :data_confirmed="covid_confirmed" 
+      :data_deaths="covid_deaths" 
+      :data_recovered="covid_recovered"
+      :data_news="news"
+      @onselected="(date) => { this.selected_date = date }"
+      @onhover="(date) => { this.hover_date = date }"
+      style="grid-area: control"/>
     </div>
   </div>
 </template>
@@ -15,33 +24,41 @@
 import * as d3 from 'd3'
 
 import StatusBar from './components/StatusBar.vue'
-import WordCloud from './components/WordCloud.vue'
+//import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
-import TwitterFeed from './components/TwitterFeed.vue'
-import NewsFeed from './components/NewsFeed.vue'
+//import TwitterFeed from './components/TwitterFeed.vue'
+//import NewsFeed from './components/NewsFeed.vue'
 
 export default {
   name: 'App',
   components: {
     StatusBar,
-    WordCloud,
+    //WordCloud,
     Map,
     TimeControl,
-    TwitterFeed,
-    NewsFeed
+    //TwitterFeed,
+    //NewsFeed
   },
   data() {
     return {
+      selected_date: null,
+      hover_date: null,
       twitter: null,
       news: null,
       covid_confirmed: null,
+      covid_deaths: null,
+      covid_recovered: null,
+    }
+  },
+  watch: {
+    date() {
+      console.log(this.date)
     }
   },
   created() {
-    this.date = new Date()
-    this.date.setUTCMonth(1, 20)
-    console.log(this.date)
+    this.selected_date = null
+    this.hover_date = null
 
     d3.json('/data/twitter.json')
       .then((data) => {
@@ -53,9 +70,17 @@ export default {
         this.news = data
       })
 
-    d3.csv('/data/covid_confirmed_02_25_20.csv')
+    d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
       .then((data) => {
         this.covid_confirmed = data
+      })
+    d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv')
+      .then((data) => {
+        this.covid_deaths = data
+      })
+    d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
+      .then((data) => {
+        this.covid_recovered = data
       })
   }
 }
@@ -73,7 +98,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #FFF;
-  margin-top: 60px;
+  margin-top: 0px;
 }
 
 h1 {
@@ -90,17 +115,15 @@ h3 {
 
 .main-content {
   display: grid;
-  grid-template-columns: 1fr 3fr 400px 400px 1fr;
-  grid-template-rows: 25vh 25vh 15vh 20vh;
+  grid-template-columns: 0fr 1.5fr 1.5fr 0.75fr 0fr;
+  grid-template-rows: 0 0 95vh;
   grid-template-areas: 
-  ". main side1 side2 ."
-  ". main side1 side2 ."
-  ". main side3 side3 ."
-  ". control side3 side3 ."
-  ". . . . .";
+  ". main main . ."
+  ". main main cloud ."
+  ". control control map .";
   grid-column-gap: 10px;
   grid-row-gap: 15px;
-  padding: 40px 0 0 0;
+  padding: 0px 0 0 0;
 }
 
 .content-panel {

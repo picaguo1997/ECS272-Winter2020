@@ -1,7 +1,6 @@
 <template>
     <div id="map-content-panel" class="content-panel">
       <div>
-          <h3>MAP</h3>
           <div id="map-container"></div>
       </div>
   </div>
@@ -26,27 +25,30 @@ export default {
             },
         }
     },
-    watch: {
-        data(newVal) {
-            if (newVal != null) {
-                this.init()
-            }
+    computed: {
+        dataReady() {
+            return (this.data != null && this.date != null)
         }
     },
-    created() {
-        this.$root.$on('time-control-slider-changed', this.timeControlSliderChanged)
+    mounted() {
+        this.init()
     },
-    destroyed() {
-        this.$root.$off('time-control-slider-changed', this.timeControlSliderChanged)
+    watch: {
+        dataReady() {
+            this.map_vis.init(this.data, this.date)
+        },
+        date(newVal) {
+            this.update(newVal)
+        }
     },
     methods: {
         init() {
             this.map_vis_dimensions.width = document.getElementById('map-content-panel').offsetWidth
-            this.map_vis_dimensions.height = document.getElementById('map-content-panel').offsetHeight - 95
+            this.map_vis_dimensions.height = document.getElementById('map-content-panel').offsetHeight - 30
 
-            this.map_vis = new MapVis(this.data, 'map-container', this.map_vis_dimensions)
+            this.map_vis = new MapVis('map-container', this.map_vis_dimensions)
         },
-        timeControlSliderChanged(value) {
+        update(value) {
             if (this.map_vis != null) {
                 this.map_vis.update(value)
             }
@@ -56,5 +58,8 @@ export default {
 </script>
 
 <style>
-
+    #map-container path {
+        stroke-width:0.5; /* control the countries borders width */
+        stroke:#6699cc; /* choose a color for the border */
+    }
 </style>
