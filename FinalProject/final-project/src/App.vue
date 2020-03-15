@@ -4,14 +4,14 @@
     <div id="main" class="main-content">
       <Map :data="covid_confirmed" :date="hover_date" style="grid-area: map"/>
       <!--
-      <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
-      -->
+      <TwitterFeed :data="twitter" :date="date" style="grid-area: side"/>
+
       <NewsFeed id='news-feed' :data="news" :date="hover_date" style="grid-area: side"/>
-      
-      <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
-      <TimeControl 
-      :data_confirmed="covid_confirmed" 
-      :data_deaths="covid_deaths" 
+      -->
+      <WordCloud :data="word_western" style="grid-area: side"/>
+      <TimeControl
+      :data_confirmed="covid_confirmed"
+      :data_deaths="covid_deaths"
       :data_recovered="covid_recovered"
       :data_news="news"
       @onselected="onTimeControlDateSelected"
@@ -26,27 +26,29 @@
 import * as d3 from 'd3'
 
 import StatusBar from './components/StatusBar.vue'
-//import WordCloud from './components/WordCloud.vue'
+import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
-import NewsFeed from './components/NewsFeed.vue'
+//import NewsFeed from './components/NewsFeed.vue'
 
 export default {
   name: 'App',
   components: {
     StatusBar,
-    //WordCloud,
+    WordCloud,
     Map,
-    TimeControl,
+    TimeControl
     //TwitterFeed,
-    NewsFeed
+    //NewsFeed
   },
   data() {
     return {
       selected_date: null,
       hover_date: null,
       twitter: null,
+      word_western: null,
+      word_eastern: null,
       news: null,
       covid_confirmed: null,
       covid_deaths: null,
@@ -70,6 +72,12 @@ export default {
     d3.json('/data/news.json')
       .then((data) => {
         this.news = data
+      })
+
+    d3.json('/data/wordcloud.json')
+      .then((data) => {
+        this.word_western = data[1]['wordcloud']
+        console.log(this.word_western)
       })
 
     d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
@@ -136,7 +144,7 @@ h3 {
   display: grid;
   grid-template-columns: 0fr 1.5fr 1.5fr 600px 0fr;
   grid-template-rows: 60vh 34vh;
-  grid-template-areas: 
+  grid-template-areas:
   ". control control side ."
   ". control control map .";
   grid-column-gap: 10px;
@@ -145,7 +153,7 @@ h3 {
 }
 
 .main-content-collapsed {
-  grid-template-areas: 
+  grid-template-areas:
   ". main main main ."
   ". main main main ."
   ". control control map .";

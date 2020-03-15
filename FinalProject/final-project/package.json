@@ -14,9 +14,11 @@
     "codegrid-js": "git://github.com/hlaw/codegrid-js.git",
     "core-js": "^3.6.4",
     "d3": "^5.15.0",
+    "google-charts": "^2.0.0",
     "moment": "^2.24.0",
     "vue": "^2.6.11",
-    "vue-tweet-embed": "^2.4.0"
+    "vue-tweet-embed": "^2.4.0",
+    "vue-wordcloud": "^1.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",
