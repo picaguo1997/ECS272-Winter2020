@@ -3,25 +3,34 @@
       <div style="overflow: hidden; height:100%">
           <h3>WORDCLOUD</h3>
           <div v-if="data != null" class="scroll">
+            <vue-word-cloud
+              :words="data"
+              :color="([, weight]) => weight > 4 ? '#1f77b4' : weight > 2 ? '#005CAF' : '#94bedb'"
+              spacing=0.2
+              font-family="Helvetica"
+            />
+            <!--
             <wordcloud :data="data" nameKey="word" valueKey="value"
               :color="western_color"
               spiral="rectangular"
               :showTooltip="true"
               font="serif"
               :wordClick="wordClickHandler">
-            </wordcloud>
+            </wordcloud>-->
           </div>
       </div>
   </div>
 </template>
 
 <script>
-import wordcloud from 'vue-wordcloud'
+//import wordcloud from 'vue-wordcloud'
+import VueWordCloud from 'vuewordcloud'
 
 export default {
     name: 'WordCloud',
     components:{
-      wordcloud
+      //wordcloud
+      [VueWordCloud.name]: VueWordCloud
     },
     props: {
         data: Array,
@@ -32,10 +41,12 @@ export default {
       }
     },
     methods: {
+      //colorAssign()
+      /*
       wordClickHandler(name, value, vm) {
         console.log('wordClickHandler', name, value, vm);
-      }
-    },
+      }*/
+    }
 }
 </script>
 
