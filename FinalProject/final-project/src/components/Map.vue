@@ -59,7 +59,7 @@ export default {
 
 <style>
     #map-container path {
-        stroke-width:0.5; /* control the countries borders width */
-        stroke:#3f3f3f; /* choose a color for the border */
+        stroke-width:0.3; /* control the countries borders width */
+        stroke:#3e3e3e; /* choose a color for the border */
     }
 </style>

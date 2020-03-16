@@ -16,7 +16,11 @@ class MapVis {
 
         // TODO: minValue, maxValue are hardcoded
         this.map_options = {
-            colorAxis: {minValue: 0, maxValue: 11, colors: ['#fff', 'rgb(31, 119, 180)']},
+            colorAxis: {
+                minValue: 0, 
+                maxValue: 11, 
+                colors: ['#fff', '#000']
+            },
             backgroundColor: 'transparent',
             datalessRegionColor: 'transparent',
             legend: 'none',
