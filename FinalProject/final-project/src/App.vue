@@ -1,19 +1,32 @@
 <template>
   <div id="app">
+    
     <StatusBar title="COVID-19 News & Spread"/>
-    <div id="main" class="main-content">
+    <div id="main" class="main-content main-content-collapsed">
+      <div id="main-area" style="display: block; grid-area: main">
+        <RadarChart 
+        :data1="news"
+        :data2="news"
+        label1="US"
+        label2="China"
+        :date="selected_date"
+        />
+      </div>
       <Map :data="covid_confirmed" :date="hover_date" style="grid-area: map"/>
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
-      <NewsFeed id='news-feed' :data="news" :date="hover_date" style="grid-area: side"/>
+      <NewsFeed id='side-area' :data="news" :date="hover_date" style="grid-area: side; display: none"/>
       
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl 
       :data_confirmed="covid_confirmed" 
       :data_deaths="covid_deaths" 
       :data_recovered="covid_recovered"
-      :data_news="news"
+      :data_news1="news"
+      :data_news2="news"
+      label_news1="US News"
+      label_news2="Chinese News"
       @onselected="onTimeControlDateSelected"
       @onunselected="onTimeControlDateUnSelected"
       @onhover="(date) => { this.hover_date = date }"
@@ -31,6 +44,7 @@ import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
 import NewsFeed from './components/NewsFeed.vue'
+import RadarChart from './components/RadarChart.vue'
 
 export default {
   name: 'App',
@@ -40,7 +54,8 @@ export default {
     Map,
     TimeControl,
     //TwitterFeed,
-    NewsFeed
+    NewsFeed,
+    RadarChart
   },
   data() {
     return {
@@ -59,6 +74,9 @@ export default {
     }
   },
   created() {
+    //TODO DEBUG ONLY
+    setTimeout(() => (this.selected_date = new Date()), 1500)
+
     this.selected_date = null
     this.hover_date = null
 
@@ -89,11 +107,13 @@ export default {
     onTimeControlDateSelected(date) {
       this.selected_date = date
       document.getElementById('main').classList.add('main-content-collapsed')
-      document.getElementById('news-feed').style.display = 'none'
+      document.getElementById('side-area').style.display = 'none'
+      document.getElementById('main-area').style.display = 'block'
     },
     onTimeControlDateUnSelected() {
       document.getElementById('main').classList.remove('main-content-collapsed')
-      document.getElementById('news-feed').style.display = 'block'
+      document.getElementById('side-area').style.display = 'block'
+      document.getElementById('main-area').style.display = 'none'
     }
   }
 }
