@@ -5,8 +5,8 @@
     <div id="main" class="main-content main-content-collapsed">
       <div id="main-area" style="display: block; grid-area: main">
         <RadarChart 
-        :data1="news"
-        :data2="news"
+        :data1="news_us"
+        :data2="news_china"
         label1="US"
         label2="China"
         :date="selected_date"
@@ -16,15 +16,16 @@
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
-      <NewsFeed id='side-area' :data="news" :date="hover_date" style="grid-area: side; display: none"/>
+      <!-- TODO only shows US news -->
+      <NewsFeed id='side-area' :data="news_us" :date="hover_date" style="grid-area: side; display: none"/>
       
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl 
       :data_confirmed="covid_confirmed" 
       :data_deaths="covid_deaths" 
       :data_recovered="covid_recovered"
-      :data_news1="news"
-      :data_news2="news"
+      :data_news1="news_us"
+      :data_news2="news_china"
       label_news1="US News"
       label_news2="Chinese News"
       @onselected="onTimeControlDateSelected"
@@ -62,7 +63,8 @@ export default {
       selected_date: null,
       hover_date: null,
       twitter: null,
-      news: null,
+      news_us: null,
+      news_china: null,
       covid_confirmed: null,
       covid_deaths: null,
       covid_recovered: null,
@@ -85,9 +87,14 @@ export default {
         this.twitter = data.tweets
       })
 
-    d3.json('/data/news.json')
+    d3.json('/data/news_us.json')
       .then((data) => {
-        this.news = data
+        this.news_us = data
+      })
+
+    d3.json('/data/news_china.json')
+      .then((data) => {
+        this.news_china = data
       })
 
     d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
