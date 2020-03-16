@@ -49,10 +49,12 @@ export default {
       colorAssign: function([, weight]){
         if (weight > this.data.wordcloud_scope.Q3) //also got Q2
           return '#005CAF'
+        else if (weight > this.data.wordcloud_scope.Q2)
+          return '#3B8ACE'
         else if (weight > this.data.wordcloud_scope.Q1)
-          return '#5893d4'
+          return '#5F9ACE'
         else
-          return '#7DB9DE'
+          return '#88ADCE'
       }
       /*
       wordClickHandler(name, value, vm) {
