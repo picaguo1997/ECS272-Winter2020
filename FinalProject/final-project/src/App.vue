@@ -74,7 +74,7 @@ export default {
         this.news = data
       })
 
-    d3.json('/data/western_wordcloud.json')
+    d3.json('/data/eastern_wordcloud.json')
       .then((data) => {
         this.word_western = data['2020-03-07']
         console.log(this.word_western)
