@@ -19,6 +19,10 @@ export default {
     data_news2: Array,
     label_news1: String,
     label_news2: String,
+    after: {
+      type: Date,
+      default: () => new Date(0)
+    }
   },
   data() {
       return {
@@ -48,11 +52,12 @@ export default {
 
       var self = this
 
-      const x1 = this.getDates(this.getNewsTimestamps(this.data_news1), 'x1', new Date('2020/01/01'))
-      const x2 = this.getDates(this.getInfectionTimestamps(this.data_confirmed), 'x2', new Date('2020/01/01'))
+      const x_news1 = this.getDates(this.getNewsTimestamps(this.data_news1), 'x_news1', this.after)
+      const x_news2 = this.getDates(this.getNewsTimestamps(this.data_news2), 'x_news2', this.after)
+      const x_infections = this.getDates(this.getInfectionTimestamps(this.data_confirmed), 'x_infections')
 
-      const y_news1 = this.getNewsDataPoints(this.data_news1, this.label_news1, new Date('2020/01/01'))
-      const y_news2 = this.getNewsDataPoints(this.data_news2, this.label_news2, new Date('2020/01/01'))
+      const y_news1 = this.getNewsDataPoints(this.data_news1, this.label_news1, this.after)
+      const y_news2 = this.getNewsDataPoints(this.data_news2, this.label_news2, this.after)
 
       const y_confirmed = this.getInfectionDataPoints(this.data_confirmed, 'confirmed')
       const y_deaths = this.getInfectionDataPoints(this.data_deaths, 'deaths')
@@ -70,6 +75,9 @@ export default {
           size: {
             height: this.height,
             //width: this.width,
+          },
+          zoom: {
+            enabled: true
           },
           data: {
               selection: {
@@ -102,16 +110,14 @@ export default {
                   val = this.measurements[d.x.getTime()][1].axes[0].value / 2
                 }
 
-                console.log(val)
-
                 return d3.interpolateRdBu(val)
               },
               xs: {
-                [this.label_news1]: 'x1',
-                [this.label_news2]: 'x1',
-                confirmed: 'x2',
-                deaths: 'x2',
-                recovered: 'x2',
+                [this.label_news1]: 'x_news1',
+                [this.label_news2]: 'x_news2',
+                confirmed: 'x_infections',
+                deaths: 'x_infections',
+                recovered: 'x_infections',
               },
               axes: {
                 [this.label_news1]: 'y2',
@@ -121,8 +127,9 @@ export default {
                 recovered: 'y'
               },
               columns: [
-                  x1,
-                  x2,
+                  x_news1,
+                  x_news2,
+                  x_infections,
                   y_confirmed,
                   y_deaths,
                   y_recovered,
@@ -156,6 +163,11 @@ export default {
                 show: true,
               }
           },
+          bar: {
+            width: {
+              ratio: 0.65
+            }
+          },
           tooltip: {
             position: function(d) {
               var position = c3.chart.internal.fn.tooltipPosition.apply(this, arguments);
@@ -182,6 +194,10 @@ export default {
     },
 
     getDates(timestamps, label, after) {
+      if (typeof after == 'undefined') {
+        after = new Date(0)
+      }
+
       timestamps = Array.from(timestamps)
       timestamps.sort()
 

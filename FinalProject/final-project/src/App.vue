@@ -28,6 +28,7 @@
       :data_news2="news_china"
       label_news1="US News"
       label_news2="Chinese News"
+      :after="new Date('01/20/2020')"
       @onselected="onTimeControlDateSelected"
       @onunselected="onTimeControlDateUnSelected"
       @onhover="(date) => { this.hover_date = date }"
