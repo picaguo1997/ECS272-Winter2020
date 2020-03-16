@@ -13,6 +13,7 @@
       :data_deaths="covid_deaths" 
       :data_recovered="covid_recovered"
       :data_news="news"
+      :data_events="events"
       @onselected="(date) => { this.selected_date = date }"
       @onhover="(date) => { this.hover_date = date }"
       style="grid-area: control"/>
@@ -26,7 +27,8 @@ import * as d3 from 'd3'
 import StatusBar from './components/StatusBar.vue'
 //import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
-import TimeControl from './components/TimeControl.vue'
+//import TimeControl from './components/TimeControl.vue'
+import TimeControl from './components/TimeControlEvents.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
 //import NewsFeed from './components/NewsFeed.vue'
 
@@ -49,6 +51,7 @@ export default {
       covid_confirmed: null,
       covid_deaths: null,
       covid_recovered: null,
+      events: null,
     }
   },
   watch: {
@@ -82,6 +85,7 @@ export default {
       .then((data) => {
         this.covid_recovered = data
       })
+    this.events = require('../../dataset/Events.json')
   }
 }
 </script>
