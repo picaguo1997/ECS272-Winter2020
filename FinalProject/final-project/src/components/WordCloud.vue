@@ -4,9 +4,10 @@
           <h3>WORDCLOUD</h3>
           <div v-if="data != null" class="scroll">
             <vue-word-cloud
-              :words="data"
-              :color="([, weight]) => weight > 4 ? '#1f77b4' : weight > 2 ? '#005CAF' : '#94bedb'"
-              spacing=0.2
+              :words="data.wordcloud"
+              :color="colorAssign"
+              :spacing="0.4"
+              :load-font="loadFont"
               font-family="Helvetica"
             />
             <!--
@@ -25,6 +26,7 @@
 <script>
 //import wordcloud from 'vue-wordcloud'
 import VueWordCloud from 'vuewordcloud'
+import FontFaceObserver from 'fontfaceobserver'
 
 export default {
     name: 'WordCloud',
@@ -33,7 +35,7 @@ export default {
       [VueWordCloud.name]: VueWordCloud
     },
     props: {
-        data: Array,
+        data: Object,
     },
     data(){
       return{
@@ -41,7 +43,17 @@ export default {
       }
     },
     methods: {
-      //colorAssign()
+      loadFont(family, style, weight, text) {
+        return (new FontFaceObserver(family, {style, weight})).load(text);
+      },
+      colorAssign: function([, weight]){
+        if (weight > this.data.wordcloud_scope.Q3) //also got Q2
+          return '#005CAF'
+        else if (weight > this.data.wordcloud_scope.Q1)
+          return '#5893d4'
+        else
+          return '#7DB9DE'
+      }
       /*
       wordClickHandler(name, value, vm) {
         console.log('wordClickHandler', name, value, vm);
