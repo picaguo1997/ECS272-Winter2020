@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    
+
     <StatusBar title="COVID-19 News & Spread"/>
     <div id="main" class="main-content main-content-collapsed">
       <div id="main-area" style="display: block; grid-area: main">
-        <RadarChart 
+        <RadarChart
         :data1="news_us"
         :data2="news_china"
         label1="US"
@@ -14,26 +14,15 @@
       </div>
       <Map :data="covid_confirmed" :date="hover_date" style="grid-area: map"/>
       <!--
-<<<<<<< HEAD
-      <TwitterFeed :data="twitter" :date="date" style="grid-area: side"/>
-
-      <NewsFeed id='news-feed' :data="news" :date="hover_date" style="grid-area: side"/>
-      -->
-      <WordCloud :data="word_western" style="grid-area: side"/>
-      <TimeControl
-      :data_confirmed="covid_confirmed"
-      :data_deaths="covid_deaths"
-=======
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
       <!-- TODO only shows US news -->
       <NewsFeed id='side-area' :data="news_us" :date="hover_date" style="grid-area: side; display: none"/>
-      
+
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
-      <TimeControl 
-      :data_confirmed="covid_confirmed" 
-      :data_deaths="covid_deaths" 
->>>>>>> visuals
+      <TimeControl
+      :data_confirmed="covid_confirmed"
+      :data_deaths="covid_deaths"
       :data_recovered="covid_recovered"
       :data_news1="news_us"
       :data_news2="news_china"
@@ -51,45 +40,31 @@
 import * as d3 from 'd3'
 
 import StatusBar from './components/StatusBar.vue'
-import WordCloud from './components/WordCloud.vue'
+//import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
-<<<<<<< HEAD
-//import NewsFeed from './components/NewsFeed.vue'
-=======
 import NewsFeed from './components/NewsFeed.vue'
 import RadarChart from './components/RadarChart.vue'
->>>>>>> visuals
 
 export default {
   name: 'App',
   components: {
     StatusBar,
-    WordCloud,
+    //WordCloud,
     Map,
-    TimeControl
+    TimeControl,
     //TwitterFeed,
-<<<<<<< HEAD
-    //NewsFeed
-=======
     NewsFeed,
     RadarChart
->>>>>>> visuals
   },
   data() {
     return {
       selected_date: null,
       hover_date: null,
       twitter: null,
-<<<<<<< HEAD
-      word_western: null,
-      word_eastern: null,
-      news: null,
-=======
       news_us: null,
       news_china: null,
->>>>>>> visuals
       covid_confirmed: null,
       covid_deaths: null,
       covid_recovered: null,
