@@ -2,6 +2,7 @@ from collections import OrderedDict
 import numpy as np
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
+import string
 
 nlp = spacy.load('en_core_web_sm')
 
@@ -85,10 +86,17 @@ class TextRank4Keyword():
     def get_keywords(self, number=10):
         """Print top number keywords"""
         node_weight = OrderedDict(sorted(self.node_weight.items(), key=lambda t: t[1], reverse=True))
+        punct = set(string.punctuation)
+        punct.update(['’','”','“','—', '%'])
+        count = 0
+        result = []
         for i, (key, value) in enumerate(node_weight.items()):
-            print(key + ' - ' + str(value))
-            if i > number:
+            if key not in punct:
+                result.append([key, value])
+                count += 1
+            if count > number:
                 break
+        return result
 
 
     def analyze(self, text,
