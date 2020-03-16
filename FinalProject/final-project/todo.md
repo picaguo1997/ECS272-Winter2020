@@ -1,4 +1,2 @@
-- Map does not render on first timecontrol hover
-- Map country codes override for special zones
 - News View only shows US news now
-- Timeline view does not normalize bars (check for max for US and China and divide)
+- Radarchart does not scale to min/max

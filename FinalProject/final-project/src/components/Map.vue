@@ -27,7 +27,7 @@ export default {
     },
     computed: {
         dataReady() {
-            return (this.data != null && this.date != null)
+            return (this.data != null)
         }
     },
     mounted() {
@@ -35,7 +35,7 @@ export default {
     },
     watch: {
         dataReady() {
-            this.map_vis.init(this.data, this.date)
+            this.map_vis.init(this.data)
         },
         date(newVal) {
             this.update(newVal)
