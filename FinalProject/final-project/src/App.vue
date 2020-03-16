@@ -128,7 +128,7 @@ export default {
 
 <style>
 body {
-  background-color: #05192B;
+  background-color: #e8e9ec;
 }
 
 #app {
@@ -182,7 +182,7 @@ h3 {
 .content-panel {
   display: inline-block;
   padding: 10px;
-  background-color: #242A3D;
+  background-color: #ffffff;
   border-radius: 4px;
   -webkit-box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);

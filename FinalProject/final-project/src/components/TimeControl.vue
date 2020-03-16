@@ -136,12 +136,14 @@ export default {
                 deaths: 'spline',
                 recovered: 'spline'
               },
+              labels: true,
           },
           axis: {
               x: {
                   type: 'timeseries',
                   tick: {
-                      format: '%Y-%m-%d'
+                      rotate: -45,
+                      format: '%m-%d'
                   }
               },
               y: {
@@ -417,23 +419,28 @@ export default {
   fill-opacity: 0.5;
 }
 .c3 .c3-axis path, .c3 .c3-axis line {
-  stroke: #fff;
+  stroke: #3f3f3f;
 }
 .c3 .c3-axis text {
-  stroke: #fff;
-  fill: #fff;
+  stroke: #3f3f3f;
+  fill: #3f3f3f;
   font-weight: 100;
   font-size: 11px;
 }
 .c3 .c3-legend-item text {
-  stroke: #fff;
-  fill: #fff;
+  stroke: #3f3f3f;
+  fill: #3f3f3f;
   font-weight: 100;
   font-size: 11px;
 }
 .c3 .c3-tooltip {
-  color: #333;
+  color: #3f3f3f;
   font-weight: 100;
   font-size: 11px;
 }
+
+ /* .c3-texts .c3-texts-confirmed {
+  fill: white;
+  fill-opacity: 0;
+} */
 </style>
