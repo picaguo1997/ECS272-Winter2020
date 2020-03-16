@@ -74,10 +74,9 @@ export default {
         this.news = data
       })
 
-    d3.json('/data/wordcloud.json')
+    d3.json('/data/wordcloud_day.json')
       .then((data) => {
-        this.word_western = data[1]['wordcloud']
-        console.log(this.word_western)
+        this.word_western = data
       })
 
     d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
