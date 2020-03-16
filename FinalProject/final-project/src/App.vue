@@ -3,22 +3,21 @@
     
     <!-- <StatusBar title="COVID-19 News & Spread"/> -->
     <div id="main" class="main-content main-content-collapsed">
-      <div id="main-area" style="display: block; grid-area: radar">
-        <RadarChart 
+        <RadarChart style="grid-area: radar" 
         :data1="news_us"
         :data2="news_china"
         label1="US"
         label2="China"
         :date="selected_date"
         />
-      </div>
       <Map :data="covid_confirmed" :date="hover_date" style="grid-area: map"/>
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
       <!-- TODO only shows US news -->
       <NewsFeed id='side-area' :data="news_us" :date="hover_date" style="grid-area: side; display: none"/>
-      
+      <RegionDetail style="grid-area: us"/>
+      <RegionDetail style="grid-area: cn"/>
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl 
       :data_confirmed="covid_confirmed" 
@@ -46,6 +45,7 @@ import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
 import NewsFeed from './components/NewsFeed.vue'
 import RadarChart from './components/RadarChart.vue'
+import RegionDetail from './components/RegionDetail.vue'
 
 export default {
   name: 'App',
@@ -54,6 +54,7 @@ export default {
     //WordCloud,
     Map,
     TimeControl,
+    RegionDetail,
     //TwitterFeed,
     NewsFeed,
     RadarChart
@@ -173,8 +174,8 @@ h3 {
 
 .main-content-collapsed {
   grid-template-areas: 
-  ". radar main main ."
-  ". radar main main ."
+  ". radar us us ."
+  ". radar cn cn ."
   ". control control map .";
   grid-template-rows: 30vh 30vh 34vh;
 }

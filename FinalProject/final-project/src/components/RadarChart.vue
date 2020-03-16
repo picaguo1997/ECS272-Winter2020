@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <div id="radar-chart-container"></div>
+  <div class="content-panel">
+
+    <div id="radar-chart-container-container">
+      <div id="padding-container"/>
+      <div id="radar-chart-container"/>
+    </div>
+
   </div>
 </template>
 
@@ -48,17 +53,16 @@ export default {
   },
   methods: {
     init() {
-      this.width = document.getElementById("radar-chart-container").offsetWidth;
+      this.width = document.getElementById("radar-chart-container-container").offsetWidth;
       this.height = document.getElementById(
-        "radar-chart-container"
+        "radar-chart-container-container"
       ).offsetHeight;
 
       const data = this.chart_data[this.date.getTime()]
-      console.log(data)
 
       const options = {
-        w: 300,
-        h: 300,
+        w: 200,
+        h: 200,
         maxValue: 2,
         facet: false,
         levels: 4,
@@ -75,6 +79,10 @@ export default {
       };
 
       RadarChart.draw("#radar-chart-container", data, options);
+
+      // set the height of the padding container so the svg is vertically centered
+      var svg_height = document.getElementsByClassName('svg-vis')[0].getClientRects()[0].height
+      document.getElementById("padding-container").style.height = ((this.height - svg_height) / 2) + 'px';
     },
     preprocessData() {
       this.chart_data = {};
@@ -206,6 +214,7 @@ export default {
 
 <style>
 .svg-vis {
+
 }
 .verticesTooltip {
 }
@@ -237,5 +246,9 @@ export default {
 .legend-labels {
   font-size: 12px;
   fill: #fff;
+}
+#radar-chart-container-container {
+  height:100%;
+  width:100%;
 }
 </style>

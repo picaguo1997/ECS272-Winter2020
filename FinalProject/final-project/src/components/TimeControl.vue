@@ -102,7 +102,7 @@ export default {
                   val = this.measurements[d.x.getTime()][1].axes[0].value / 2
                 }
 
-                console.log(val)
+                // console.log(val)
 
                 return d3.interpolateRdBu(val)
               },
