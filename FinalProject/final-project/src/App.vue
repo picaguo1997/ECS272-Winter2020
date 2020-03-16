@@ -1,9 +1,20 @@
 <template>
   <div id="app">
+    
     <StatusBar title="COVID-19 News & Spread"/>
-    <div id="main" class="main-content">
+    <div id="main" class="main-content main-content-collapsed">
+      <div id="main-area" style="display: block; grid-area: main">
+        <RadarChart 
+        :data1="news_us"
+        :data2="news_china"
+        label1="US"
+        label2="China"
+        :date="selected_date"
+        />
+      </div>
       <Map :data="covid_confirmed" :date="hover_date" style="grid-area: map"/>
       <!--
+<<<<<<< HEAD
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side"/>
 
       <NewsFeed id='news-feed' :data="news" :date="hover_date" style="grid-area: side"/>
@@ -12,8 +23,22 @@
       <TimeControl
       :data_confirmed="covid_confirmed"
       :data_deaths="covid_deaths"
+=======
+      <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
+      -->
+      <!-- TODO only shows US news -->
+      <NewsFeed id='side-area' :data="news_us" :date="hover_date" style="grid-area: side; display: none"/>
+      
+      <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
+      <TimeControl 
+      :data_confirmed="covid_confirmed" 
+      :data_deaths="covid_deaths" 
+>>>>>>> visuals
       :data_recovered="covid_recovered"
-      :data_news="news"
+      :data_news1="news_us"
+      :data_news2="news_china"
+      label_news1="US News"
+      label_news2="Chinese News"
       @onselected="onTimeControlDateSelected"
       @onunselected="onTimeControlDateUnSelected"
       @onhover="(date) => { this.hover_date = date }"
@@ -30,7 +55,12 @@ import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
+<<<<<<< HEAD
 //import NewsFeed from './components/NewsFeed.vue'
+=======
+import NewsFeed from './components/NewsFeed.vue'
+import RadarChart from './components/RadarChart.vue'
+>>>>>>> visuals
 
 export default {
   name: 'App',
@@ -40,16 +70,26 @@ export default {
     Map,
     TimeControl
     //TwitterFeed,
+<<<<<<< HEAD
     //NewsFeed
+=======
+    NewsFeed,
+    RadarChart
+>>>>>>> visuals
   },
   data() {
     return {
       selected_date: null,
       hover_date: null,
       twitter: null,
+<<<<<<< HEAD
       word_western: null,
       word_eastern: null,
       news: null,
+=======
+      news_us: null,
+      news_china: null,
+>>>>>>> visuals
       covid_confirmed: null,
       covid_deaths: null,
       covid_recovered: null,
@@ -61,6 +101,9 @@ export default {
     }
   },
   created() {
+    //TODO DEBUG ONLY
+    setTimeout(() => (this.selected_date = new Date()), 1500)
+
     this.selected_date = null
     this.hover_date = null
 
@@ -69,9 +112,14 @@ export default {
         this.twitter = data.tweets
       })
 
-    d3.json('/data/news.json')
+    d3.json('/data/news_us.json')
       .then((data) => {
-        this.news = data
+        this.news_us = data
+      })
+
+    d3.json('/data/news_china.json')
+      .then((data) => {
+        this.news_china = data
       })
 
     d3.json('/data/eastern_wordcloud.json')
@@ -97,11 +145,13 @@ export default {
     onTimeControlDateSelected(date) {
       this.selected_date = date
       document.getElementById('main').classList.add('main-content-collapsed')
-      document.getElementById('news-feed').style.display = 'none'
+      document.getElementById('side-area').style.display = 'none'
+      document.getElementById('main-area').style.display = 'block'
     },
     onTimeControlDateUnSelected() {
       document.getElementById('main').classList.remove('main-content-collapsed')
-      document.getElementById('news-feed').style.display = 'block'
+      document.getElementById('side-area').style.display = 'block'
+      document.getElementById('main-area').style.display = 'none'
     }
   }
 }
@@ -109,7 +159,7 @@ export default {
 
 <style>
 body {
-  background-color: #05192B;
+  background-color: #e8e9ec;
 }
 
 #app {
@@ -163,7 +213,7 @@ h3 {
 .content-panel {
   display: inline-block;
   padding: 10px;
-  background-color: #242A3D;
+  background-color: #ffffff;
   border-radius: 4px;
   -webkit-box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);

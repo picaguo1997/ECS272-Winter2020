@@ -15,7 +15,10 @@ export default {
     data_confirmed: Array,
     data_deaths: Array,
     data_recovered: Array,
-    data_news: Array,
+    data_news1: Array,
+    data_news2: Array,
+    label_news1: String,
+    label_news2: String,
   },
   data() {
       return {
@@ -24,11 +27,12 @@ export default {
           hover_date: null,
           width: 0,
           height: 0,
+          measurements: null,
       }
   },
   computed: {
     dataReady() {
-      return (this.data_confirmed != null && this.data_deaths != null && this.data_recovered != null && this.data_news != null)
+      return (this.data_confirmed != null && this.data_deaths != null && this.data_recovered != null && this.data_news1 != null && this.data_news2 != null)
     }
   },
   watch: {
@@ -40,13 +44,15 @@ export default {
   },
   methods: {
     init() {
+      this.preprocessData()
+
       var self = this
 
-      const x1 = this.getDates(this.getNewsTimestamps(this.data_news), 'x1', new Date('2020/01/01'))
+      const x1 = this.getDates(this.getNewsTimestamps(this.data_news1), 'x1', new Date('2020/01/01'))
       const x2 = this.getDates(this.getInfectionTimestamps(this.data_confirmed), 'x2', new Date('2020/01/01'))
 
-      const y_news = this.getNewsDataPoints(this.data_news, 'news', new Date('2020/01/01'))
-      console.log(y_news)
+      const y_news1 = this.getNewsDataPoints(this.data_news1, this.label_news1, new Date('2020/01/01'))
+      const y_news2 = this.getNewsDataPoints(this.data_news2, this.label_news2, new Date('2020/01/01'))
 
       const y_confirmed = this.getInfectionDataPoints(this.data_confirmed, 'confirmed')
       const y_deaths = this.getInfectionDataPoints(this.data_deaths, 'deaths')
@@ -81,14 +87,35 @@ export default {
                 this.selected_date = null
                 this.$emit('onunselected')
               },
+              color: (color, d) => {
+                if (!d.id || (d.id != this.label_news1 && d.id != this.label_news2)) {
+                  return color
+                }
+
+                let val = -1
+
+                if (d.id == this.label_news1) {
+                  val = this.measurements[d.x.getTime()][0].axes[0].value / 2
+                }
+
+                if (d.id == this.label_news2) {
+                  val = this.measurements[d.x.getTime()][1].axes[0].value / 2
+                }
+
+                console.log(val)
+
+                return d3.interpolateRdBu(val)
+              },
               xs: {
-                news: 'x1',
+                [this.label_news1]: 'x1',
+                [this.label_news2]: 'x1',
                 confirmed: 'x2',
                 deaths: 'x2',
                 recovered: 'x2',
               },
               axes: {
-                news: 'y2',
+                [this.label_news1]: 'y2',
+                [this.label_news2]: 'y2',
                 confirmed: 'y',
                 deaths: 'y',
                 recovered: 'y'
@@ -99,20 +126,24 @@ export default {
                   y_confirmed,
                   y_deaths,
                   y_recovered,
-                  y_news
+                  y_news1,
+                  y_news2,
               ],         
               types: {
-                news: 'bar',
+                [this.label_news1]: 'bar',
+                [this.label_news2]: 'bar',
                 confirmed: 'spline',
                 deaths: 'spline',
                 recovered: 'spline'
               },
+              labels: true,
           },
           axis: {
               x: {
                   type: 'timeseries',
                   tick: {
-                      format: '%Y-%m-%d'
+                      rotate: -45,
+                      format: '%m-%d'
                   }
               },
               y: {
@@ -141,14 +172,12 @@ export default {
           }
       })
 
-      console.log(this.chart)
-
       const container = document.getElementById('time-control-chart')
       
       new ResizeObserver(() => {
           this.chart.internal.selectChart.style('max-height', 'none')
           this.height = document.getElementById('time-control-chart').offsetHeight
-          this.chart.resize({height: this.height})
+          setTimeout(() => { this.chart.resize({height: this.height}) }, 100)
       }).observe(container)
 
       
@@ -206,8 +235,6 @@ export default {
     getNewsDataPoints(data, label, after) {
       var timestamps = {}
 
-      console.log(label)
-
       for(var article of data) {
         var timestamp = new Date(article['time-stamp'].split(',')[0]).getTime()
 
@@ -257,6 +284,130 @@ export default {
       
       return result
     },
+    preprocessData() {
+      this.measurements = {};
+
+      const timestamps = this.getTimestamps();
+
+      for (const timestamp of timestamps) {
+        // Create template for data
+        this.measurements[timestamp] = [
+          {
+            group: this.label_news1,
+            axes: [
+              { axis: "sentiment", value: 0 },
+              { axis: "sadness", value: 0 },
+              { axis: "joy", value: 0 },
+              { axis: "fear", value: 0 },
+              { axis: "disgust", value: 0 },
+              { axis: "anger", value: 0 }
+            ]
+          },
+          {
+            group: this.label_news2,
+            axes: [
+              { axis: "sentiment", value: 0 },
+              { axis: "sadness", value: 0 },
+              { axis: "joy", value: 0 },
+              { axis: "fear", value: 0 },
+              { axis: "disgust", value: 0 },
+              { axis: "anger", value: 0 }
+            ]
+          }
+        ];
+
+        // Process dataset1
+        var data1_count = 0;
+        for (const article of this.data_news1) {
+          if (
+            timestamp == new Date(article["time-stamp"].split(",")[0]).getTime()
+          ) {
+              if (typeof article["watson_analysis"] == 'undefined') {
+                  continue
+              }
+            if (isNaN(article["watson_analysis"]["sentiment"])) {
+                  continue
+              }
+            
+            data1_count += 1;
+
+            this.measurements[timestamp][0].axes[0].value += 1 +
+              article["watson_analysis"]["sentiment"];
+            this.measurements[timestamp][0].axes[1].value += 1 +
+              article["watson_analysis"]["sadness"];
+            this.measurements[timestamp][0].axes[2].value += 1 +
+              article["watson_analysis"]["joy"];
+            this.measurements[timestamp][0].axes[3].value += 1 +
+              article["watson_analysis"]["fear"];
+            this.measurements[timestamp][0].axes[4].value += 1 +
+              article["watson_analysis"]["disgust"];
+            this.measurements[timestamp][0].axes[5].value += 1 +
+              article["watson_analysis"]["anger"];
+          }
+        }
+        // normalize
+        this.measurements[timestamp][0].axes[0].value /= data1_count;
+        this.measurements[timestamp][0].axes[1].value /= data1_count;
+        this.measurements[timestamp][0].axes[2].value /= data1_count;
+        this.measurements[timestamp][0].axes[3].value /= data1_count;
+        this.measurements[timestamp][0].axes[4].value /= data1_count;
+        this.measurements[timestamp][0].axes[5].value /= data1_count;
+
+        // Process dataset2
+        var data2_count = 0;
+        for (const article of this.data_news2) {
+          if (
+            timestamp == new Date(article["time-stamp"].split(",")[0]).getTime()
+          ) {
+
+                // TODO these checks are not necessary with new dataset
+                if (typeof article["watson_analysis"] == 'undefined') {
+                  continue
+              }
+              if (isNaN(article["watson_analysis"]["sentiment"])) {
+                  continue
+              }
+
+            data2_count += 1;
+
+            this.measurements[timestamp][1].axes[0].value += 1 +
+              article["watson_analysis"]["sentiment"];
+            this.measurements[timestamp][1].axes[1].value += 1 +
+              article["watson_analysis"]["sadness"];
+            this.measurements[timestamp][1].axes[2].value += 1 +
+              article["watson_analysis"]["joy"];
+            this.measurements[timestamp][1].axes[3].value += 1 +
+              article["watson_analysis"]["fear"];
+            this.measurements[timestamp][1].axes[4].value += 1 +
+              article["watson_analysis"]["disgust"];
+            this.measurements[timestamp][1].axes[5].value += 1 +
+              article["watson_analysis"]["anger"];
+          }
+        }
+        // normalize
+        this.measurements[timestamp][1].axes[0].value /= data2_count;
+        this.measurements[timestamp][1].axes[1].value /= data2_count;
+        this.measurements[timestamp][1].axes[2].value /= data2_count;
+        this.measurements[timestamp][1].axes[3].value /= data2_count;
+        this.measurements[timestamp][1].axes[4].value /= data2_count;
+        this.measurements[timestamp][1].axes[5].value /= data2_count;
+      }
+    },
+    getTimestamps() {
+      var timestamps = new Set();
+
+      for (const article of this.data_news1) {
+        timestamps.add(new Date(article["time-stamp"].split(",")[0]).getTime());
+      }
+      for (const article of this.data_news2) {
+        timestamps.add(new Date(article["time-stamp"].split(",")[0]).getTime());
+      }
+
+      timestamps = Array.from(timestamps);
+      timestamps.sort();
+
+      return timestamps;
+    }
   }
 };
 </script>
@@ -268,23 +419,28 @@ export default {
   fill-opacity: 0.5;
 }
 .c3 .c3-axis path, .c3 .c3-axis line {
-  stroke: #fff;
+  stroke: #3f3f3f;
 }
 .c3 .c3-axis text {
-  stroke: #fff;
-  fill: #fff;
+  stroke: #3f3f3f;
+  fill: #3f3f3f;
   font-weight: 100;
   font-size: 11px;
 }
 .c3 .c3-legend-item text {
-  stroke: #fff;
-  fill: #fff;
+  stroke: #3f3f3f;
+  fill: #3f3f3f;
   font-weight: 100;
   font-size: 11px;
 }
 .c3 .c3-tooltip {
-  color: #333;
+  color: #3f3f3f;
   font-weight: 100;
   font-size: 11px;
 }
+
+ /* .c3-texts .c3-texts-confirmed {
+  fill: white;
+  fill-opacity: 0;
+} */
 </style>

@@ -60,6 +60,6 @@ export default {
 <style>
     #map-container path {
         stroke-width:0.5; /* control the countries borders width */
-        stroke:#6699cc; /* choose a color for the border */
+        stroke:#3f3f3f; /* choose a color for the border */
     }
 </style>
