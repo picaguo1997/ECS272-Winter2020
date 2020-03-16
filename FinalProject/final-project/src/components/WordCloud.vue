@@ -2,7 +2,7 @@
   <div class="content-panel">
       <div style="overflow: hidden; height:100%">
           <h3>WORDCLOUD</h3>
-          <div v-if="data != null" class="scroll">
+          <div v-if="data!=null" class="scroll">
             <vue-word-cloud
               :words="data.wordcloud"
               :color="colorAssign"
@@ -35,11 +35,12 @@ export default {
       [VueWordCloud.name]: VueWordCloud
     },
     props: {
-        data: Object,
+        data: Object
     },
     data(){
       return{
-        western_color: ['#1f77b4', '#629fc9', '#94bedb', '#c9e0ef']
+        western_color: ['#1f77b4', '#629fc9', '#94bedb', '#c9e0ef'],
+        wordcloud_ready: false
       }
     },
     methods: {
