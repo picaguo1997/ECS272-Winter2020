@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     
-    <StatusBar title="COVID-19 News & Spread"/>
+    <!-- <StatusBar title="COVID-19 News & Spread"/> -->
     <div id="main" class="main-content main-content-collapsed">
-      <div id="main-area" style="display: block; grid-area: main">
+      <div id="main-area" style="display: block; grid-area: radar">
         <RadarChart 
         :data1="news_us"
         :data2="news_china"
@@ -39,7 +39,7 @@
 <script>
 import * as d3 from 'd3'
 
-import StatusBar from './components/StatusBar.vue'
+// import StatusBar from './components/StatusBar.vue'
 //import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
@@ -50,7 +50,7 @@ import RadarChart from './components/RadarChart.vue'
 export default {
   name: 'App',
   components: {
-    StatusBar,
+    // StatusBar,
     //WordCloud,
     Map,
     TimeControl,
@@ -173,8 +173,8 @@ h3 {
 
 .main-content-collapsed {
   grid-template-areas: 
-  ". main main main ."
-  ". main main main ."
+  ". radar main main ."
+  ". radar main main ."
   ". control control map .";
   grid-template-rows: 30vh 30vh 34vh;
 }
