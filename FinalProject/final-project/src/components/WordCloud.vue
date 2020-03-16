@@ -39,7 +39,8 @@ export default {
     },
     data(){
       return{
-        western_color: ['#1f77b4', '#629fc9', '#94bedb', '#c9e0ef'],
+        eastern_color: ['#A71739','#CB1B45', '#D44466', '#DD6D88', '#E797AA'],
+        western_color: ['#004C90','#005CAF', '#2E79BD', '#5C97CC', '#8BB4DA'],
         wordcloud_ready: false
       }
     },
@@ -49,13 +50,13 @@ export default {
       },
       colorAssign: function([, weight]){
         if (weight > this.data.wordcloud_scope.Q3) //also got Q2
-          return '#005CAF'
+          return this.western_color[0]
         else if (weight > this.data.wordcloud_scope.Q2)
-          return '#3B8ACE'
+          return this.western_color[1]
         else if (weight > this.data.wordcloud_scope.Q1)
-          return '#5F9ACE'
+          return this.western_color[2]
         else
-          return '#88ADCE'
+          return this.western_color[3]
       }
       /*
       wordClickHandler(name, value, vm) {
