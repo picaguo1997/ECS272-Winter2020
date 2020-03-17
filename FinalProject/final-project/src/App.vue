@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-
     <!-- <StatusBar title="COVID-19 News & Spread"/> -->
     <div id="main" class="main-content main-content-collapsed">
+      <div style="grid-area: title">
+        <h1 id="title">COVID-19 News Coverage Analysis</h1>
+      </div>
         <RadarChart style="grid-area: radar" 
         class="main-area"
         :data1="news_us"
@@ -204,19 +206,28 @@ h3 {
 
 .main-content-collapsed {
   grid-template-areas:
+  ". title title title ."
   ". radar us us ."
   ". radar cn cn ."
   ". control control map .";
-  grid-template-rows: 30vh 30vh 34vh;
+  grid-template-rows: 5vh 29vh 29vh 30vh;
 }
 
 .content-panel {
   display: inline-block;
   padding: 10px;
   background-color: #ffffff;
-  border-radius: 4px;
+  border-radius: 10px;
   -webkit-box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
+#title {
+  font-size: 35px;
+  color: #484848;
+  text-align: left;
+  font-weight: 900;
+  padding-left: 10px;
 }
 
 </style>

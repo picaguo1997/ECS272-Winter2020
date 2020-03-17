@@ -3,10 +3,10 @@
       <vue-word-cloud
         :words="data.wordcloud"
         :color="colorAssign"
-        :spacing="0.4"
+        :spacing="0.8"
         :load-font="loadFont"
         font-family="Helvetica"
-        :font-size-ratio="5"
+        :font-size-ratio="10"
       />
     </div>
 </template>
