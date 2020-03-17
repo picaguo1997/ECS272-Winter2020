@@ -1,6 +1,6 @@
 <template>
   <div id="region-detail" class="content-panel">
-    <WordCloud :data="data" :color="color"/>
+    <WordCloud :data="word_data" :color="color"/>
   </div>
 </template>
 
@@ -17,7 +17,6 @@ export default {
       label: String,
       date: Date
     },
-<<<<<<< HEAD
     data() {
       return{
         width: 0,
@@ -30,8 +29,6 @@ export default {
         western_color: ['#004C90','#005CAF', '#2E79BD', '#5C97CC', '#8BB4DA']
       }
     },
-=======
->>>>>>> visuals
     computed: {
       dataReady() {
         return this.data != null && this.label!= null && this.date!=null;
@@ -40,8 +37,9 @@ export default {
     watch:{
       date(newVal) {
         if (newVal != null && this.word_ready) {
+          this.word_date = this.formatDate(newVal)
           if (typeof this.data[this.word_date] != 'undefined') {
-            this.word_date = this.formatDate(newVal)
+            console.log(this.word_date)
             this.init()
           }
         }
@@ -53,10 +51,6 @@ export default {
     },
     methods:{
       init(){
-        this.width = document.getElementById("region-detail").offsetWidth;
-        this.height = document.getElementById("region-detail").offsetHeight;
-        console.log(this.width, this.height)
-
         this.word_data = this.data[this.word_date]
 
         if(this.label == "us"){

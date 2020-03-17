@@ -2,14 +2,9 @@
   <div id="app">
 
     <!-- <StatusBar title="COVID-19 News & Spread"/> -->
-<<<<<<< HEAD
-    <div id="main" class="main-content main-content-collapsed">
-        <RadarChart style="grid-area: radar"
-=======
     <div id="main" class="main-content">
-        <RadarChart style="grid-area: radar" 
+        <RadarChart style="grid-area: radar"
         class="main-area"
->>>>>>> visuals
         :data1="news_us"
         :data2="news_china"
         label1="US"
@@ -20,20 +15,13 @@
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
-<<<<<<< HEAD
-      <!-- TODO only shows US news -->
-      <NewsFeed id='side-area' :data="news_us" :date="hover_date" style="grid-area: side; display: none"/>
-      <RegionDetail :data="word_us" :date="selected_date" label="us" style="grid-area: us"/>
-      <RegionDetail :data="word_china" :date="selected_date" label="china" style="grid-area: cn"/>
-=======
-      <NewsFeed id='side-area' 
-      :news1="news_us" 
+      <NewsFeed id='side-area'
+      :news1="news_us"
       :news2="news_china"
-      :date="hover_date" 
+      :date="hover_date"
       style="grid-area: side"/>
-      <RegionDetail style="grid-area: us" class="main-area"/>
-      <RegionDetail style="grid-area: cn" class="main-area"/>
->>>>>>> visuals
+      <RegionDetail :data="word_us" :date="selected_date" label="us" style="grid-area: us" class="main-area"/>
+      <RegionDetail :data="word_china" :date="selected_date" label="china" style="grid-area: cn" class="main-area"/>
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl
       :data_confirmed="covid_confirmed"
@@ -115,12 +103,12 @@ export default {
 
     d3.json('/data/western_wordcloud.json')
       .then((data) => {
-        this.word_us = data['2020-03-09']
+        this.word_us = data
       })
 
     d3.json('/data/eastern_wordcloud.json')
       .then((data) => {
-        this.word_china = data['2020-03-09']
+        this.word_china = data
       })
 
     d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
