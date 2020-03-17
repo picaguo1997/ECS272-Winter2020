@@ -1,17 +1,9 @@
 <template>
   <div id="app">
-<<<<<<< HEAD
 
-    <StatusBar title="COVID-19 News & Spread"/>
-    <div id="main" class="main-content main-content-collapsed">
-      <div id="main-area" style="display: block; grid-area: main">
-        <RadarChart
-=======
-    
     <!-- <StatusBar title="COVID-19 News & Spread"/> -->
     <div id="main" class="main-content main-content-collapsed">
-        <RadarChart style="grid-area: radar" 
->>>>>>> visuals
+        <RadarChart style="grid-area: radar"
         :data1="news_us"
         :data2="news_china"
         label1="US"
@@ -24,12 +16,8 @@
       -->
       <!-- TODO only shows US news -->
       <NewsFeed id='side-area' :data="news_us" :date="hover_date" style="grid-area: side; display: none"/>
-<<<<<<< HEAD
-
-=======
-      <RegionDetail style="grid-area: us"/>
-      <RegionDetail style="grid-area: cn"/>
->>>>>>> visuals
+      <RegionDetail :data="word_us" :date="selected_date" label="us" style="grid-area: us"/>
+      <RegionDetail :data="word_china" :date="selected_date" label="china" style="grid-area: cn"/>
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl
       :data_confirmed="covid_confirmed"
@@ -51,7 +39,6 @@
 import * as d3 from 'd3'
 
 // import StatusBar from './components/StatusBar.vue'
-//import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
@@ -78,6 +65,8 @@ export default {
       twitter: null,
       news_us: null,
       news_china: null,
+      word_us: null,
+      word_china: null,
       covid_confirmed: null,
       covid_deaths: null,
       covid_recovered: null,
@@ -110,10 +99,14 @@ export default {
         this.news_china = data
       })
 
+    d3.json('/data/western_wordcloud.json')
+      .then((data) => {
+        this.word_us = data['2020-03-09']
+      })
+
     d3.json('/data/eastern_wordcloud.json')
       .then((data) => {
-        this.word_western = data['2020-03-07']
-        console.log(this.word_western)
+        this.word_china = data['2020-03-09']
       })
 
     d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
@@ -191,15 +184,9 @@ h3 {
 }
 
 .main-content-collapsed {
-<<<<<<< HEAD
   grid-template-areas:
-  ". main main main ."
-  ". main main main ."
-=======
-  grid-template-areas: 
   ". radar us us ."
   ". radar cn cn ."
->>>>>>> visuals
   ". control control map .";
   grid-template-rows: 30vh 30vh 34vh;
 }
