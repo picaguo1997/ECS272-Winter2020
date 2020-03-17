@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    
+
     <!-- <StatusBar title="COVID-19 News & Spread"/> -->
     <div id="main" class="main-content main-content-collapsed">
         <RadarChart style="grid-area: radar" 
@@ -15,23 +15,23 @@
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
-      <NewsFeed id='side-area' 
-      :news1="news_us" 
+      <NewsFeed id='side-area'
+      :news1="news_us"
       :news2="news_china"
-      :date="date" 
-      style="grid-area: side; display: none;"/>
-      <RegionDetail style="grid-area: us" class="main-area"/>
-      <RegionDetail style="grid-area: cn" class="main-area"/>
+      :date="hover_date"
+      style="grid-area: side; display: none"/>
+      <RegionDetail :data="word_us" :date="date" label="us" style="grid-area: us" class="main-area"/>
+      <RegionDetail :data="word_china" :date="date" label="china" style="grid-area: cn" class="main-area"/>
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
-      <TimeControl 
-      :data_confirmed="covid_confirmed" 
-      :data_deaths="covid_deaths" 
+      <TimeControl
+      :data_confirmed="covid_confirmed"
+      :data_deaths="covid_deaths"
       :data_recovered="covid_recovered"
       :data_news1="news_us"
       :data_news2="news_china"
       label_news1="US News"
       label_news2="Chinese News"
-      :after="new Date('01/20/2020')"
+      :after="new Date('01/10/2020')"
       @onselected="onTimeControlDateSelected"
       @onunselected="onTimeControlDateUnSelected"
       @onhover="(date) => { this.hover_date = date }"
@@ -44,7 +44,6 @@
 import * as d3 from 'd3'
 
 // import StatusBar from './components/StatusBar.vue'
-//import WordCloud from './components/WordCloud.vue'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
@@ -71,6 +70,8 @@ export default {
       twitter: null,
       news_us: null,
       news_china: null,
+      word_us: null,
+      word_china: null,
       covid_confirmed: null,
       covid_deaths: null,
       covid_recovered: null,
@@ -98,6 +99,16 @@ export default {
     d3.json('/data/news_china.json')
       .then((data) => {
         this.news_china = data
+      })
+
+    d3.json('/data/western_wordcloud.json')
+      .then((data) => {
+        this.word_us = data
+      })
+
+    d3.json('/data/eastern_wordcloud.json')
+      .then((data) => {
+        this.word_china = data
       })
 
     d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
@@ -171,7 +182,7 @@ h3 {
   display: grid;
   grid-template-columns: 0fr 2fr 1.5fr 600px 0fr;
   grid-template-rows: 60vh 34vh;
-  grid-template-areas: 
+  grid-template-areas:
   ". control control side ."
   ". control control map .";
   grid-column-gap: 15px;
@@ -180,7 +191,7 @@ h3 {
 }
 
 .main-content-collapsed {
-  grid-template-areas: 
+  grid-template-areas:
   ". radar us us ."
   ". radar cn cn ."
   ". control control map .";
