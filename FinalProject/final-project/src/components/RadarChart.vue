@@ -233,6 +233,7 @@ export default {
 }
 .axis-labels {
   fill: #484848;
+  font-weight: 700;
   font-size: 12px;
 }
 .polygon-vertices {
