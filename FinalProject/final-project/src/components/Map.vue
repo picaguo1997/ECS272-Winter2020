@@ -27,7 +27,7 @@ export default {
     },
     computed: {
         dataReady() {
-            return (this.data != null && this.date != null)
+            return (this.data != null)
         }
     },
     mounted() {
@@ -35,7 +35,7 @@ export default {
     },
     watch: {
         dataReady() {
-            this.map_vis.init(this.data, this.date)
+            this.map_vis.init(this.data)
         },
         date(newVal) {
             this.update(newVal)
@@ -59,7 +59,7 @@ export default {
 
 <style>
     #map-container path {
-        stroke-width:0.3; /* control the countries borders width */
-        stroke:#3e3e3e; /* choose a color for the border */
+        stroke-width:0.3px; /* control the countries borders width */
+        stroke:#d0d0d0; /* choose a color for the border */
     }
 </style>

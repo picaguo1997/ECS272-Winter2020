@@ -17,6 +17,7 @@ export default {
       label: String,
       date: Date
     },
+<<<<<<< HEAD
     data() {
       return{
         width: 0,
@@ -29,6 +30,8 @@ export default {
         western_color: ['#004C90','#005CAF', '#2E79BD', '#5C97CC', '#8BB4DA']
       }
     },
+=======
+>>>>>>> visuals
     computed: {
       dataReady() {
         return this.data != null && this.label!= null && this.date!=null;

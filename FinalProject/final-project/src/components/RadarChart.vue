@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import * as d3 from 'd3'
 import RadarChart from "../js/vis/radar-chart.js";
 
 export default {
@@ -46,24 +47,24 @@ export default {
     dataReady() {
       this.preprocessData();
 
-      console.log(this.chart_data);
-
       this.chart_ready = true
     }
   },
   methods: {
     init() {
-      this.width = document.getElementById("radar-chart-container-container").offsetWidth;
+      this.width = document.getElementById("radar-chart-container-container").offsetWidth - 200;
       this.height = document.getElementById(
         "radar-chart-container-container"
-      ).offsetHeight;
+      ).offsetHeight - 200;
 
       const data = this.chart_data[this.date.getTime()]
 
+      let chartsize = Math.min(this.width, this.height)
+
       const options = {
-        w: 200,
-        h: 200,
-        maxValue: 2,
+        w: chartsize,
+        h: chartsize,
+        maxValue: 1,
         facet: false,
         levels: 4,
         levelScale: 0.85,
@@ -75,14 +76,19 @@ export default {
         showAxes: true,
         showLegend: true,
         showVertices: true,
-        showPolygons: true
+        showPolygons: true,
+        translateX: 100,
+        translateY: 100,
+        paddingX: 200,
+        paddingY: 200,
+        colors: d3.scaleOrdinal().range(['#0092FF', '#E30000']),
       };
 
       RadarChart.draw("#radar-chart-container", data, options);
 
       // set the height of the padding container so the svg is vertically centered
-      var svg_height = document.getElementsByClassName('svg-vis')[0].getClientRects()[0].height
-      document.getElementById("padding-container").style.height = ((this.height - svg_height) / 2) + 'px';
+      //var svg_height = document.getElementsByClassName('svg-vis')[0].getClientRects()[0].height
+      document.getElementById("padding-container").style.height = ((this.height - chartsize) / 2) + 'px';
     },
     preprocessData() {
       this.chart_data = {};
@@ -131,17 +137,17 @@ export default {
             
             data1_count += 1;
 
-            this.chart_data[timestamp][0].axes[0].value += 1 +
-              article["watson_analysis"]["sentiment"];
-            this.chart_data[timestamp][0].axes[1].value += 1 +
+            this.chart_data[timestamp][0].axes[0].value += (1 +
+              article["watson_analysis"]["sentiment"]) / 2;
+            this.chart_data[timestamp][0].axes[1].value +=
               article["watson_analysis"]["sadness"];
-            this.chart_data[timestamp][0].axes[2].value += 1 +
+            this.chart_data[timestamp][0].axes[2].value +=
               article["watson_analysis"]["joy"];
-            this.chart_data[timestamp][0].axes[3].value += 1 +
+            this.chart_data[timestamp][0].axes[3].value +=
               article["watson_analysis"]["fear"];
-            this.chart_data[timestamp][0].axes[4].value += 1 +
+            this.chart_data[timestamp][0].axes[4].value +=
               article["watson_analysis"]["disgust"];
-            this.chart_data[timestamp][0].axes[5].value += 1 +
+            this.chart_data[timestamp][0].axes[5].value +=
               article["watson_analysis"]["anger"];
           }
         }
@@ -170,17 +176,17 @@ export default {
 
             data2_count += 1;
 
-            this.chart_data[timestamp][1].axes[0].value += 1 +
-              article["watson_analysis"]["sentiment"];
-            this.chart_data[timestamp][1].axes[1].value += 1 +
+            this.chart_data[timestamp][1].axes[0].value += (1 +
+              article["watson_analysis"]["sentiment"]) / 2;
+            this.chart_data[timestamp][1].axes[1].value +=
               article["watson_analysis"]["sadness"];
-            this.chart_data[timestamp][1].axes[2].value += 1 +
+            this.chart_data[timestamp][1].axes[2].value +=
               article["watson_analysis"]["joy"];
-            this.chart_data[timestamp][1].axes[3].value += 1 +
+            this.chart_data[timestamp][1].axes[3].value +=
               article["watson_analysis"]["fear"];
-            this.chart_data[timestamp][1].axes[4].value += 1 +
+            this.chart_data[timestamp][1].axes[4].value +=
               article["watson_analysis"]["disgust"];
-            this.chart_data[timestamp][1].axes[5].value += 1 +
+            this.chart_data[timestamp][1].axes[5].value +=
               article["watson_analysis"]["anger"];
           }
         }
@@ -217,35 +223,38 @@ export default {
 
 }
 .verticesTooltip {
+  
 }
 .level-lines {
-  stroke: #fff;
+  stroke: #979797;
   stroke-width: 1px;
 }
 .level-labels {
-  fill: #ccc;
-  font-size: 8px;
+  fill: #484848;
+  font-size: 10px;
 }
 .axis-lines {
-  stroke: #fff;
+  stroke: #979797;
   stroke-width: 1px;
 }
 .axis-labels {
-  fill: #fff;
-  font-size: 12px;
+  fill: #484848;
+  font-weight: 700;
+  font-size: 18px;
 }
 .polygon-vertices {
-  fill-opacity: 0.6;
+  fill-opacity: 0.4;
 }
 .polygon-areas {
-  fill-opacity: 0.2;
+  fill-opacity: 0.1;
 }
 .legend-tiles {
-  fill-opacity: 0.3;
+  font-size: 20px;
+  fill-opacity: 1;
 }
 .legend-labels {
   font-size: 12px;
-  fill: #fff;
+  fill: #000;
 }
 #radar-chart-container-container {
   height:100%;

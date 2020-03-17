@@ -2,8 +2,14 @@
   <div id="app">
 
     <!-- <StatusBar title="COVID-19 News & Spread"/> -->
+<<<<<<< HEAD
     <div id="main" class="main-content main-content-collapsed">
         <RadarChart style="grid-area: radar"
+=======
+    <div id="main" class="main-content">
+        <RadarChart style="grid-area: radar" 
+        class="main-area"
+>>>>>>> visuals
         :data1="news_us"
         :data2="news_china"
         label1="US"
@@ -14,10 +20,20 @@
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
+<<<<<<< HEAD
       <!-- TODO only shows US news -->
       <NewsFeed id='side-area' :data="news_us" :date="hover_date" style="grid-area: side; display: none"/>
       <RegionDetail :data="word_us" :date="selected_date" label="us" style="grid-area: us"/>
       <RegionDetail :data="word_china" :date="selected_date" label="china" style="grid-area: cn"/>
+=======
+      <NewsFeed id='side-area' 
+      :news1="news_us" 
+      :news2="news_china"
+      :date="hover_date" 
+      style="grid-area: side"/>
+      <RegionDetail style="grid-area: us" class="main-area"/>
+      <RegionDetail style="grid-area: cn" class="main-area"/>
+>>>>>>> visuals
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl
       :data_confirmed="covid_confirmed"
@@ -27,6 +43,7 @@
       :data_news2="news_china"
       label_news1="US News"
       label_news2="Chinese News"
+      :after="new Date('01/20/2020')"
       @onselected="onTimeControlDateSelected"
       @onunselected="onTimeControlDateUnSelected"
       @onhover="(date) => { this.hover_date = date }"
@@ -78,9 +95,6 @@ export default {
     }
   },
   created() {
-    //TODO DEBUG ONLY
-    setTimeout(() => (this.selected_date = new Date()), 1500)
-
     this.selected_date = null
     this.hover_date = null
 
@@ -122,17 +136,27 @@ export default {
         this.covid_recovered = data
       })
   },
+  mounted() {
+      document.getElementsByClassName('main-area').forEach(element => {
+        element.style.display = 'none'
+      })
+  },
   methods: {
     onTimeControlDateSelected(date) {
       this.selected_date = date
       document.getElementById('main').classList.add('main-content-collapsed')
       document.getElementById('side-area').style.display = 'none'
-      document.getElementById('main-area').style.display = 'block'
+      document.getElementsByClassName('main-area').forEach(element => {
+        element.style.display = 'block'
+      })
     },
     onTimeControlDateUnSelected() {
+      this.selected_date = null
       document.getElementById('main').classList.remove('main-content-collapsed')
       document.getElementById('side-area').style.display = 'block'
-      document.getElementById('main-area').style.display = 'none'
+      document.getElementsByClassName('main-area').forEach(element => {
+        element.style.display = 'none'
+      })
     }
   }
 }
@@ -173,12 +197,12 @@ h3 {
 
 .main-content {
   display: grid;
-  grid-template-columns: 0fr 1.5fr 1.5fr 600px 0fr;
+  grid-template-columns: 0fr 2fr 1.5fr 600px 0fr;
   grid-template-rows: 60vh 34vh;
   grid-template-areas:
   ". control control side ."
   ". control control map .";
-  grid-column-gap: 10px;
+  grid-column-gap: 15px;
   grid-row-gap: 15px;
   padding: 0px 0 0 0;
 }

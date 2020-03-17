@@ -19,6 +19,10 @@ export default {
     data_news2: Array,
     label_news1: String,
     label_news2: String,
+    after: {
+      type: Date,
+      default: () => new Date(0)
+    }
   },
   data() {
       return {
@@ -48,11 +52,12 @@ export default {
 
       var self = this
 
-      const x1 = this.getDates(this.getNewsTimestamps(this.data_news1), 'x1', new Date('2020/01/01'))
-      const x2 = this.getDates(this.getInfectionTimestamps(this.data_confirmed), 'x2', new Date('2020/01/01'))
+      const x_news1 = this.getDates(this.getNewsTimestamps(this.data_news1), 'x_news1', this.after)
+      const x_news2 = this.getDates(this.getNewsTimestamps(this.data_news2), 'x_news2', this.after)
+      const x_infections = this.getDates(this.getInfectionTimestamps(this.data_confirmed), 'x_infections')
 
-      const y_news1 = this.getNewsDataPoints(this.data_news1, this.label_news1, new Date('2020/01/01'))
-      const y_news2 = this.getNewsDataPoints(this.data_news2, this.label_news2, new Date('2020/01/01'))
+      const y_news1 = this.getNewsDataPoints(this.data_news1, this.label_news1, this.after)
+      const y_news2 = this.getNewsDataPoints(this.data_news2, this.label_news2, this.after)
 
       const y_confirmed = this.getInfectionDataPoints(this.data_confirmed, 'confirmed')
       const y_deaths = this.getInfectionDataPoints(this.data_deaths, 'deaths')
@@ -65,11 +70,17 @@ export default {
       this.chart = c3.generate({
           bindto: '#time-control-chart',
           padding: {
-            top: 10,
+            top: 40,
+            bottom: 10,
+            left: 50,
+            right: 50,
           },
           size: {
             height: this.height,
             //width: this.width,
+          },
+          zoom: {
+            enabled: true
           },
           data: {
               selection: {
@@ -87,8 +98,13 @@ export default {
                 this.selected_date = null
                 this.$emit('onunselected')
               },
+              colors: {
+                confirmed: '#a3a3a3',
+                recovered: '#a3a3a3',
+                deaths: '#a3a3a3',
+              },
               color: (color, d) => {
-                if (!d.id || (d.id != this.label_news1 && d.id != this.label_news2)) {
+                if (!d.id || !d.x || (d.id != this.label_news1 && d.id != this.label_news2)) {
                   return color
                 }
 
@@ -101,17 +117,14 @@ export default {
                 if (d.id == this.label_news2) {
                   val = this.measurements[d.x.getTime()][1].axes[0].value / 2
                 }
-
-                // console.log(val)
-
                 return d3.interpolateRdBu(val)
               },
               xs: {
-                [this.label_news1]: 'x1',
-                [this.label_news2]: 'x1',
-                confirmed: 'x2',
-                deaths: 'x2',
-                recovered: 'x2',
+                [this.label_news1]: 'x_news1',
+                [this.label_news2]: 'x_news2',
+                confirmed: 'x_infections',
+                deaths: 'x_infections',
+                recovered: 'x_infections',
               },
               axes: {
                 [this.label_news1]: 'y2',
@@ -121,8 +134,9 @@ export default {
                 recovered: 'y'
               },
               columns: [
-                  x1,
-                  x2,
+                  x_news1,
+                  x_news2,
+                  x_infections,
                   y_confirmed,
                   y_deaths,
                   y_recovered,
@@ -150,7 +164,7 @@ export default {
                 min: 0,
                 padding: 0,
                 tick: {
-                  count: 3,
+                  count: 5,
                   format: d3.format('d')
                 },
                 show: false, 
@@ -158,6 +172,11 @@ export default {
               y2: {
                 show: false,
               }
+          },
+          bar: {
+            width: {
+              ratio: 0.65
+            }
           },
           tooltip: {
             position: function(d) {
@@ -185,6 +204,10 @@ export default {
     },
 
     getDates(timestamps, label, after) {
+      if (typeof after == 'undefined') {
+        after = new Date(0)
+      }
+
       timestamps = Array.from(timestamps)
       timestamps.sort()
 
@@ -332,17 +355,17 @@ export default {
             
             data1_count += 1;
 
-            this.measurements[timestamp][0].axes[0].value += 1 +
-              article["watson_analysis"]["sentiment"];
-            this.measurements[timestamp][0].axes[1].value += 1 +
+            this.measurements[timestamp][0].axes[0].value += (1 +
+              article["watson_analysis"]["sentiment"]) / 2;
+            this.measurements[timestamp][0].axes[1].value +=
               article["watson_analysis"]["sadness"];
-            this.measurements[timestamp][0].axes[2].value += 1 +
+            this.measurements[timestamp][0].axes[2].value +=
               article["watson_analysis"]["joy"];
-            this.measurements[timestamp][0].axes[3].value += 1 +
+            this.measurements[timestamp][0].axes[3].value +=
               article["watson_analysis"]["fear"];
-            this.measurements[timestamp][0].axes[4].value += 1 +
+            this.measurements[timestamp][0].axes[4].value +=
               article["watson_analysis"]["disgust"];
-            this.measurements[timestamp][0].axes[5].value += 1 +
+            this.measurements[timestamp][0].axes[5].value +=
               article["watson_analysis"]["anger"];
           }
         }
@@ -371,17 +394,17 @@ export default {
 
             data2_count += 1;
 
-            this.measurements[timestamp][1].axes[0].value += 1 +
-              article["watson_analysis"]["sentiment"];
-            this.measurements[timestamp][1].axes[1].value += 1 +
+            this.measurements[timestamp][1].axes[0].value += (1 +
+              article["watson_analysis"]["sentiment"]) / 2;
+            this.measurements[timestamp][1].axes[1].value +=
               article["watson_analysis"]["sadness"];
-            this.measurements[timestamp][1].axes[2].value += 1 +
+            this.measurements[timestamp][1].axes[2].value +=
               article["watson_analysis"]["joy"];
-            this.measurements[timestamp][1].axes[3].value += 1 +
+            this.measurements[timestamp][1].axes[3].value +=
               article["watson_analysis"]["fear"];
-            this.measurements[timestamp][1].axes[4].value += 1 +
+            this.measurements[timestamp][1].axes[4].value +=
               article["watson_analysis"]["disgust"];
-            this.measurements[timestamp][1].axes[5].value += 1 +
+            this.measurements[timestamp][1].axes[5].value +=
               article["watson_analysis"]["anger"];
           }
         }
@@ -420,7 +443,7 @@ export default {
   fill-opacity: 0.5;
 }
 .c3 .c3-axis path, .c3 .c3-axis line {
-  stroke: #3f3f3f;
+  stroke: #919191;
 }
 .c3 .c3-axis text {
   stroke: #3f3f3f;
@@ -440,9 +463,18 @@ export default {
   font-size: 11px;
 }
 
-.c3-line-deaths {
-  fill:#3f3f3f;
-  stroke-width: 15px;
+/* .c3-line-deaths {
+  stroke-width: 1.1px;
+} */
+
+.c3-chart-lines .c3-circles .c3-circle {
+    display: none;
+}
+
+/* change circle radius */
+.c3-selected-circle {
+  r: 3;
+  stroke:#181818;
 }
 
  /* .c3-texts .c3-texts-confirmed {
