@@ -24,7 +24,7 @@ class extractKeywords():
         
     def tokenize(self, line):
         punct = set(string.punctuation)
-        punct.update(['’','”','“','—','%'])
+        punct.update(['’','”','“','—','%','‘'])
         token = word_tokenize(line)
         token = [''.join(c for c in s if not c.isdigit()) for s in token]
         token = [''.join(c for c in s if c not in punct) for s in token]
