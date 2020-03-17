@@ -1,5 +1,2 @@
-- Map does not render on first timecontrol hover
-- Map country codes override for special zones
-- Chinese media timestamps are not uniform and different from US timestamps
-- News View only shows US news now
-- Timeline view does not normalize bars (check for max for US and China and divide)
+- Radarchart does not scale to min/max
+- Coloring bug if you click the bars in the timecontrol chart (click linechart instead)

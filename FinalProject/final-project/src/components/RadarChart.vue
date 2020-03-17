@@ -46,8 +46,6 @@ export default {
     dataReady() {
       this.preprocessData();
 
-      console.log(this.chart_data);
-
       this.chart_ready = true
     }
   },

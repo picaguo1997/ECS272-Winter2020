@@ -14,8 +14,11 @@
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
-      <!-- TODO only shows US news -->
-      <NewsFeed id='side-area' :data="news_us" :date="hover_date" style="grid-area: side; display: none"/>
+      <NewsFeed id='side-area' 
+      :news1="news_us" 
+      :news2="news_china"
+      :date="hover_date" 
+      style="grid-area: side; display: block"/>
       <RegionDetail style="grid-area: us"/>
       <RegionDetail style="grid-area: cn"/>
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
@@ -27,6 +30,7 @@
       :data_news2="news_china"
       label_news1="US News"
       label_news2="Chinese News"
+      :after="new Date('01/20/2020')"
       @onselected="onTimeControlDateSelected"
       @onunselected="onTimeControlDateUnSelected"
       @onhover="(date) => { this.hover_date = date }"
@@ -77,9 +81,6 @@ export default {
     }
   },
   created() {
-    //TODO DEBUG ONLY
-    setTimeout(() => (this.selected_date = new Date()), 1500)
-
     this.selected_date = null
     this.hover_date = null
 
@@ -119,6 +120,7 @@ export default {
       document.getElementById('main-area').style.display = 'block'
     },
     onTimeControlDateUnSelected() {
+      this.selected_date = null
       document.getElementById('main').classList.remove('main-content-collapsed')
       document.getElementById('side-area').style.display = 'block'
       document.getElementById('main-area').style.display = 'none'
