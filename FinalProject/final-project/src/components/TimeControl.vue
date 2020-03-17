@@ -102,7 +102,7 @@ export default {
                   val = this.measurements[d.x.getTime()][1].axes[0].value / 2
                 }
 
-                console.log(val)
+                // console.log(val)
 
                 return d3.interpolateRdBu(val)
               },
@@ -136,7 +136,7 @@ export default {
                 deaths: 'spline',
                 recovered: 'spline'
               },
-              labels: true,
+              labels: false, // for showing labels over the splines
           },
           axis: {
               x: {
@@ -144,7 +144,7 @@ export default {
                   tick: {
                       rotate: -45,
                       format: '%m-%d'
-                  }
+                  },
               },
               y: {
                 min: 0,
@@ -152,10 +152,11 @@ export default {
                 tick: {
                   count: 3,
                   format: d3.format('d')
-                }
+                },
+                show: false, 
               },
               y2: {
-                show: true,
+                show: false,
               }
           },
           tooltip: {
@@ -437,6 +438,11 @@ export default {
   color: #3f3f3f;
   font-weight: 100;
   font-size: 11px;
+}
+
+.c3-line-deaths {
+  fill:#3f3f3f;
+  stroke-width: 15px;
 }
 
  /* .c3-texts .c3-texts-confirmed {

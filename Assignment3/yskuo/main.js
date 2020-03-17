@@ -28,7 +28,7 @@ d3.csv('../datasets/Police_Department_Incidents_-_Previous_Year__2016_.csv')
             count: v.length
           }})
         .entries(data);
-      console.log(data_heat);
+      // console.log(data_heat);
 
 
       var data_str = d3.nest()
@@ -40,7 +40,7 @@ d3.csv('../datasets/Police_Department_Incidents_-_Previous_Year__2016_.csv')
           return v.length;
           })
         .entries(data);
-      console.log(data_str);
+      // console.log(data_str);
 
       var uniqueDay = d3.map(data, function(d){ return d.weekday; }).keys(); //7
       var uniqueRes = d3.map(data, function(d){ return d.res; }).keys().sort(); //14
@@ -50,7 +50,7 @@ d3.csv('../datasets/Police_Department_Incidents_-_Previous_Year__2016_.csv')
       var process_date = uniqueDate.map(function(d){
         return new Date(d);
       });
-      console.log(uniqueDis);
+      // console.log(uniqueDis);
 
 
 
