@@ -355,17 +355,17 @@ export default {
             
             data1_count += 1;
 
-            this.measurements[timestamp][0].axes[0].value += 1 +
-              article["watson_analysis"]["sentiment"];
-            this.measurements[timestamp][0].axes[1].value += 1 +
+            this.measurements[timestamp][0].axes[0].value += (1 +
+              article["watson_analysis"]["sentiment"]) / 2;
+            this.measurements[timestamp][0].axes[1].value +=
               article["watson_analysis"]["sadness"];
-            this.measurements[timestamp][0].axes[2].value += 1 +
+            this.measurements[timestamp][0].axes[2].value +=
               article["watson_analysis"]["joy"];
-            this.measurements[timestamp][0].axes[3].value += 1 +
+            this.measurements[timestamp][0].axes[3].value +=
               article["watson_analysis"]["fear"];
-            this.measurements[timestamp][0].axes[4].value += 1 +
+            this.measurements[timestamp][0].axes[4].value +=
               article["watson_analysis"]["disgust"];
-            this.measurements[timestamp][0].axes[5].value += 1 +
+            this.measurements[timestamp][0].axes[5].value +=
               article["watson_analysis"]["anger"];
           }
         }
@@ -394,17 +394,17 @@ export default {
 
             data2_count += 1;
 
-            this.measurements[timestamp][1].axes[0].value += 1 +
-              article["watson_analysis"]["sentiment"];
-            this.measurements[timestamp][1].axes[1].value += 1 +
+            this.measurements[timestamp][1].axes[0].value += (1 +
+              article["watson_analysis"]["sentiment"]) / 2;
+            this.measurements[timestamp][1].axes[1].value +=
               article["watson_analysis"]["sadness"];
-            this.measurements[timestamp][1].axes[2].value += 1 +
+            this.measurements[timestamp][1].axes[2].value +=
               article["watson_analysis"]["joy"];
-            this.measurements[timestamp][1].axes[3].value += 1 +
+            this.measurements[timestamp][1].axes[3].value +=
               article["watson_analysis"]["fear"];
-            this.measurements[timestamp][1].axes[4].value += 1 +
+            this.measurements[timestamp][1].axes[4].value +=
               article["watson_analysis"]["disgust"];
-            this.measurements[timestamp][1].axes[5].value += 1 +
+            this.measurements[timestamp][1].axes[5].value +=
               article["watson_analysis"]["anger"];
           }
         }
@@ -474,6 +474,7 @@ export default {
 /* change circle radius */
 .c3-selected-circle {
   r: 3;
+  stroke:#181818;
 }
 
  /* .c3-texts .c3-texts-confirmed {

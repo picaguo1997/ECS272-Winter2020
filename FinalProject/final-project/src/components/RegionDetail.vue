@@ -13,9 +13,6 @@ export default {
     props: {
 
     },
-    data() {
-
-    },
     computed: {
 
     },

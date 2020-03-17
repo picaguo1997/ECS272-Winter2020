@@ -2,8 +2,9 @@
   <div id="app">
     
     <!-- <StatusBar title="COVID-19 News & Spread"/> -->
-    <div id="main" class="main-content main-content-collapsed">
+    <div id="main" class="main-content">
         <RadarChart style="grid-area: radar" 
+        class="main-area"
         :data1="news_us"
         :data2="news_china"
         label1="US"
@@ -18,9 +19,9 @@
       :news1="news_us" 
       :news2="news_china"
       :date="hover_date" 
-      style="grid-area: side; display: block"/>
-      <RegionDetail style="grid-area: us"/>
-      <RegionDetail style="grid-area: cn"/>
+      style="grid-area: side"/>
+      <RegionDetail style="grid-area: us" class="main-area"/>
+      <RegionDetail style="grid-area: cn" class="main-area"/>
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl 
       :data_confirmed="covid_confirmed" 
@@ -112,18 +113,27 @@ export default {
         this.covid_recovered = data
       })
   },
+  mounted() {
+      document.getElementsByClassName('main-area').forEach(element => {
+        element.style.display = 'none'
+      })
+  },
   methods: {
     onTimeControlDateSelected(date) {
       this.selected_date = date
       document.getElementById('main').classList.add('main-content-collapsed')
       document.getElementById('side-area').style.display = 'none'
-      document.getElementById('main-area').style.display = 'block'
+      document.getElementsByClassName('main-area').forEach(element => {
+        element.style.display = 'block'
+      })
     },
     onTimeControlDateUnSelected() {
       this.selected_date = null
       document.getElementById('main').classList.remove('main-content-collapsed')
       document.getElementById('side-area').style.display = 'block'
-      document.getElementById('main-area').style.display = 'none'
+      document.getElementsByClassName('main-area').forEach(element => {
+        element.style.display = 'none'
+      })
     }
   }
 }
@@ -164,7 +174,7 @@ h3 {
 
 .main-content {
   display: grid;
-  grid-template-columns: 0fr 1.5fr 1.5fr 600px 0fr;
+  grid-template-columns: 0fr 2fr 1.5fr 600px 0fr;
   grid-template-rows: 60vh 34vh;
   grid-template-areas: 
   ". control control side ."
