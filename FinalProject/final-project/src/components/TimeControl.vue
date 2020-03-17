@@ -96,7 +96,7 @@ export default {
                 this.$emit('onunselected')
               },
               color: (color, d) => {
-                if (!d.id || (d.id != this.label_news1 && d.id != this.label_news2)) {
+                if (!d.id || !d.x || (d.id != this.label_news1 && d.id != this.label_news2)) {
                   return color
                 }
 
@@ -155,7 +155,7 @@ export default {
                 min: 0,
                 padding: 0,
                 tick: {
-                  count: 3,
+                  count: 5,
                   format: d3.format('d')
                 }
               },

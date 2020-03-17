@@ -14,7 +14,6 @@ class MapVis {
         
         this.chart = null
 
-        // TODO: minValue, maxValue are hardcoded
         this.map_options = {
             colorAxis: {minValue: 0, maxValue: 11, colors: ['#fff', 'rgb(31, 119, 180)']},
             backgroundColor: 'transparent',
@@ -30,9 +29,7 @@ class MapVis {
         this.ready = false
 
         // setup the map
-        GoogleCharts.load(() => {
-            //this.draw_map()
-        }, {
+        GoogleCharts.load(() => {}, {
             'packages': ['geochart'],
             'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
         })
@@ -113,7 +110,6 @@ class MapVis {
                 // add data country names' ISO codes, calculate the logged value
                 date_data.forEach(row => {
                     var id = row.key
-                    //row.cases = row.value
                     var logged_cases = Math.log(1 + row.value)
                     
                     if (logged_cases > max_value) {
@@ -131,8 +127,6 @@ class MapVis {
     }
 
     draw_map() {
-        //var table_data = GoogleCharts.api.visualization.arrayToDataTable(this.filtered_data)
-
         if (this.chart == null) {
             this.chart = new GoogleCharts.api.visualization.GeoChart(document.getElementById(this.html_root))
         }

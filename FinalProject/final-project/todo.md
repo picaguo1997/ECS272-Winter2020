@@ -1,2 +1,2 @@
-- News View only shows US news now
 - Radarchart does not scale to min/max
+- Coloring bug if you click the bars in the timecontrol chart (click linechart instead)

@@ -52,7 +52,6 @@ export default {
       ).offsetHeight;
 
       const data = this.chart_data[this.date.getTime()]
-      console.log(data)
 
       const options = {
         w: 300,
