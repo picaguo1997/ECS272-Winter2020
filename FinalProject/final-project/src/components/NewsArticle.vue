@@ -22,6 +22,7 @@ export default {
 
 <style scoped>
 .article {
+    border: 1px solid #aaa;
     margin: 10px;
     padding: 15px;
     border-radius: 5px;

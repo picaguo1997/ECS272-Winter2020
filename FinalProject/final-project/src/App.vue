@@ -20,8 +20,20 @@
       :news2="news_china"
       :date="hover_date"
       style="grid-area: side; display: none"/>
-      <RegionDetail :data="word_us" :date="date" label="us" style="grid-area: us" class="main-area"/>
-      <RegionDetail :data="word_china" :date="date" label="china" style="grid-area: cn" class="main-area"/>
+      <RegionDetail 
+      :data="word_us" 
+      :date="date"
+      :news="news_us" 
+      label="us" 
+      style="grid-area: us" 
+      class="main-area"/>
+      <RegionDetail 
+      :data="word_china" 
+      :date="date" 
+      :news="news_china"
+      label="china" 
+      style="grid-area: cn" 
+      class="main-area"/>
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
       <TimeControl
       :data_confirmed="covid_confirmed"

@@ -1,19 +1,23 @@
 <template>
   <div id="region-detail" class="content-panel">
-    <WordCloud :data="word_data" :color="color"/>
+    <WordCloud :data="word_data" :color="color" style="grid-area: cloud"/>
+    <NewsFeed :news="news" :date="date" style="grid-area: feed" />
   </div>
 </template>
 
 <script>
+import NewsFeed from './NewsFeed.vue'
 import WordCloud from './WordCloud.vue'
 
 export default {
     name: 'RegionDetail',
     components:{
-      WordCloud
+      WordCloud,
+      NewsFeed
     },
     props: {
       data: Object,
+      news: Array,
       label: String,
       date: Date
     },
@@ -39,7 +43,6 @@ export default {
         if (newVal != null && this.word_ready) {
           this.word_date = this.formatDate(newVal)
           if (typeof this.data[this.word_date] != 'undefined') {
-            console.log(this.word_date)
             this.init()
           }
         }
@@ -77,5 +80,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+#region-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 100%;
+  grid-template-areas:
+  "cloud feed";
+  padding: 10px;
+}
 </style>

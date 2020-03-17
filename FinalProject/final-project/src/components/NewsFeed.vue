@@ -1,13 +1,9 @@
 <template>
-  <div class="content-panel">
       <div style="overflow: hidden; height:100%">
-          <h3>News Feed</h3>
-          <div v-if="news1 != null && news2 != null && date != null" class="scroll">
-              <NewsArticle v-for="article in getNews(news1,2)" :key="article.url" :data="article" />
-              <NewsArticle v-for="article in getNews(news2,2)" :key="article.url" :data="article" />
+          <div v-if="news != null && date != null" class="scroll">
+              <NewsArticle v-for="article in getNews(news,5)" :key="article.url" :data="article" />
           </div>
       </div>
-  </div>
 </template>
 
 <script>
@@ -19,8 +15,7 @@ export default {
         NewsArticle
     },
     props: {
-        news1: Array,
-        news2: Array,
+        news: Array,
         date: Date
     },
     methods: {
@@ -55,10 +50,9 @@ export default {
     overflow-y: scroll;
     display: flex; 
     flex-direction: column;
-    height: calc(100% - 95px);
+    height: 100%;
     /* Below lines hide the scroll bar */
     width: 100%;
-    padding-right: 17px;
     box-sizing: content-box;
 }
 </style>
