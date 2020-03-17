@@ -1,7 +1,8 @@
 <template>
   <div id="region-detail" class="content-panel">
-    <WordCloud :data="word_data" :color="color" style="grid-area: cloud"/>
-    <NewsFeed :news="news" :date="date" style="grid-area: feed" />
+    <WordCloud :data="word_data" :color="color" style="grid-area: cloud; width: 45%; height: 100%; float: left"
+    />
+    <NewsFeed :news="news" :date="date" style="grid-area: feed; width: 45%; height: 100%; float: left; margin-left: 40px"/>
   </div>
 </template>
 

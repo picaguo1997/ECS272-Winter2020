@@ -174,6 +174,7 @@ var RadarChart = {
         .attr("transform", "translate(" + config.translateX + "," + config.translateY + ")");
 
       // create verticesTooltip
+      d3.select('.verticesTooltip').remove()
       vis.verticesTooltip = d3.select("body")
         .append("div").classed("verticesTooltip", true)
         .attr("opacity", 0)

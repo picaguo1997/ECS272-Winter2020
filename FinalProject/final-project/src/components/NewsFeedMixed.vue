@@ -1,21 +1,25 @@
 <template>
+<div class="content-panel">
       <div style="overflow: hidden; height:100%">
-          <div v-if="news != null && date != null" class="scroll">
-            <NewsArticle v-for="article in getNews(news,5)" :data="article"  :key="article.url" />
+          <div v-if="news1 != null && news2 != null && date != null" class="scroll">
+            <NewsArticle v-for="article in getNews(news1,5)" :data="article"  :key="article.url" />
+            <NewsArticle v-for="article in getNews(news2,5)" :data="article"  :key="article.url" />
           </div>
       </div>
+</div>
 </template>
 
 <script>
 import NewsArticle from './NewsArticle'
 
 export default {
-    name: 'NewsFeed',
+    name: 'NewsFeedMixed',
     components: {
         NewsArticle
     },
     props: {
-        news: Array,
+        news1: Array,
+        news2: Array,
         date: Date
     },
     methods: {
@@ -32,11 +36,6 @@ export default {
             })
 
             result.sort(() => Math.random() - 0.5)
-            // result.sort((a,b) => {
-            //     let result = new Date(a['time-stamp']).getTime() > new Date(b['time-stamp']).getTime()
-
-            //     return result ? -1 : 1
-            // })
 
             if (limit != null) {
                 return result.slice(0,limit)

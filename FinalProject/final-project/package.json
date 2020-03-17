@@ -10,6 +10,7 @@
   "dependencies": {
     "@amcharts/amcharts4": "^4.9.4",
     "@amcharts/amcharts4-geodata": "^4.1.12",
+    "buefy": "^0.8.13",
     "c3": "^0.7.15",
     "codegrid-js": "git://github.com/hlaw/codegrid-js.git",
     "core-js": "^3.6.4",

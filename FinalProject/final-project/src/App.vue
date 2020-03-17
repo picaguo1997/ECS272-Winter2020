@@ -3,7 +3,12 @@
     <!-- <StatusBar title="COVID-19 News & Spread"/> -->
     <div id="main" class="main-content main-content-collapsed">
       <div style="grid-area: title">
-        <h1 id="title">COVID-19 News Coverage Analysis</h1>
+        <b-button 
+        @click="toggleView"
+        size="is-medium"
+        icon-left="window-maximize" 
+        style="float:right; margin: 20px">{{view_maximized ? 'Overview' : 'Full View'}}</b-button>
+        <h1 id="title" style="margin: 20px">COVID-19 News Coverage Analysis</h1>
       </div>
         <RadarChart style="grid-area: radar" 
         class="main-area"
@@ -17,10 +22,10 @@
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
-      <NewsFeed id='side-area'
+      <NewsFeedMixed id='side-area'
       :news1="news_us"
       :news2="news_china"
-      :date="hover_date"
+      :date="date"
       style="grid-area: side; display: none"/>
       <RegionDetail 
       :data="word_us" 
@@ -61,7 +66,7 @@ import * as d3 from 'd3'
 import Map from './components/Map.vue'
 import TimeControl from './components/TimeControl.vue'
 //import TwitterFeed from './components/TwitterFeed.vue'
-import NewsFeed from './components/NewsFeed.vue'
+import NewsFeedMixed from './components/NewsFeedMixed.vue'
 import RadarChart from './components/RadarChart.vue'
 import RegionDetail from './components/RegionDetail.vue'
 
@@ -74,11 +79,12 @@ export default {
     TimeControl,
     RegionDetail,
     //TwitterFeed,
-    NewsFeed,
+    NewsFeedMixed,
     RadarChart
   },
   data() {
     return {
+      view_maximized: true,
       selected_date: null,
       hover_date: null,
       twitter: null,
@@ -138,7 +144,33 @@ export default {
         this.covid_recovered = data
       })
   },
+  mounted() {
+        document.getElementById('side-area').style.display = 'none'
+        document.getElementsByClassName('main-area').forEach(element => {
+          element.style.display = 'block'
+        })
+        //document.getElementById('main').classList.add('main-content-collapsed')
+  },
   methods: {
+    toggleView() {
+      if (!this.view_maximized) {
+
+        document.getElementById('side-area').style.display = 'none'
+        document.getElementsByClassName('main-area').forEach(element => {
+          element.style.display = 'block'
+        })
+        document.getElementById('main').classList.add('main-content-collapsed')
+      } else {
+
+        document.getElementById('side-area').style.display = 'block'
+        document.getElementsByClassName('main-area').forEach(element => {
+          element.style.display = 'none'
+        })
+        document.getElementById('main').classList.remove('main-content-collapsed')
+      }
+
+      this.view_maximized = !this.view_maximized
+    },
     onTimeControlDateSelected(date) {
       this.selected_date = date
       // document.getElementById('main').classList.add('main-content-collapsed')
@@ -195,8 +227,9 @@ h3 {
 .main-content {
   display: grid;
   grid-template-columns: 0fr 2fr 1.5fr 600px 0fr;
-  grid-template-rows: 60vh 34vh;
+  grid-template-rows: 7vh 56vh 30vh;
   grid-template-areas:
+  ". title title title ."
   ". control control side ."
   ". control control map .";
   grid-column-gap: 20px;
@@ -210,7 +243,7 @@ h3 {
   ". radar us us ."
   ". radar cn cn ."
   ". control control map .";
-  grid-template-rows: 5vh 29vh 29vh 30vh;
+  grid-template-rows: 7vh 28vh 28vh 30vh;
 }
 
 .content-panel {
