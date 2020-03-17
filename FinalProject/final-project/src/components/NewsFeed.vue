@@ -1,7 +1,10 @@
 <template>
       <div style="overflow: hidden; height:100%">
           <div v-if="news != null && date != null" class="scroll">
-              <NewsArticle v-for="article in getNews(news,5)" :key="article.url" :data="article" />
+              <template v-for="article in getNews(news,5)">
+                <NewsArticle  :data="article"  :key="article.url" />
+                <hr :key="article.url">
+              </template>
           </div>
       </div>
 </template>

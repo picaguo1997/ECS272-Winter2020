@@ -85,8 +85,9 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 100%;
+  grid-column-gap: 150px;
   grid-template-areas:
   "cloud feed";
-  padding: 10px;
+  padding: 50px;
 }
 </style>

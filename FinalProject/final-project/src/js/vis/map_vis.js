@@ -20,6 +20,7 @@ class MapVis {
                 maxValue: 11, 
                 colors: ['#fff', '#000']
             },
+            'chartArea': {'width': '40%', 'height': '40%'},
             backgroundColor: 'transparent',
             datalessRegionColor: 'transparent',
             legend: 'none',

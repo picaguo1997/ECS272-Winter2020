@@ -1,6 +1,6 @@
 <template>
     <div id="map-content-panel" class="content-panel">
-      <div>
+      <div style="padding: 20px">
           <div id="map-container"></div>
       </div>
   </div>
@@ -43,8 +43,8 @@ export default {
     },
     methods: {
         init() {
-            this.map_vis_dimensions.width = document.getElementById('map-content-panel').offsetWidth - 30
-            this.map_vis_dimensions.height = document.getElementById('map-content-panel').offsetHeight
+            this.map_vis_dimensions.width = document.getElementById('map-content-panel').offsetWidth - 70
+            this.map_vis_dimensions.height = document.getElementById('map-content-panel').offsetHeight - 40
 
             this.map_vis = new MapVis('map-container', this.map_vis_dimensions)
         },

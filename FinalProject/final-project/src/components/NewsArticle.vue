@@ -1,12 +1,12 @@
 <template>
 <div class="article" v-on:click="articleClicked()">
     <div style="grid-area: img">
-        <img :src="getImagePath()" width=75>
+        <img :src="getImagePath()" width=50>
     </div>
     <div style="grid-area: text">
         <b>{{data.headline}}</b>
-        <br><br>
-        {{data.journal}}, {{data['time-stamp']}}
+        <!-- <br><br>
+        {{data.journal}}, {{data['time-stamp']}} -->
     </div>
 </div>
 </template>
@@ -67,17 +67,18 @@ export default {
 <style scoped>
 .article {
     display: grid;
-    grid-template-columns: 0.5fr 1.5fr;
+    grid-template-columns: 75px 1.5fr;
     grid-template-areas: "img text";
+    text-align: left;
     align-items: center;
-    grid-column-gap: 10px;
+    grid-column-gap: 15px;
 
     margin: 10px;
-    padding: 15px;
-    border: 2px solid grey;
-    border-radius: 15px;
+    padding: 3px;
+    /* border: 2px solid grey; */
+    /* border-radius: 15px; */
     background-color: #fff;
-    color: #000;
+    color: rgb(70, 70, 70);
     cursor: pointer;
 /* -webkit-box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.16);
 -moz-box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.16);
