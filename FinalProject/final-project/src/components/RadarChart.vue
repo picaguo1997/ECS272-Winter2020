@@ -64,7 +64,7 @@ export default {
       const options = {
         w: chartsize,
         h: chartsize,
-        maxValue: 1,
+        //maxValue: 1,
         facet: false,
         levels: 4,
         levelScale: 0.85,

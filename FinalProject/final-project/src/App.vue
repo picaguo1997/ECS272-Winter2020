@@ -2,24 +2,24 @@
   <div id="app">
     
     <!-- <StatusBar title="COVID-19 News & Spread"/> -->
-    <div id="main" class="main-content">
+    <div id="main" class="main-content main-content-collapsed">
         <RadarChart style="grid-area: radar" 
         class="main-area"
         :data1="news_us"
         :data2="news_china"
         label1="US"
         label2="China"
-        :date="selected_date"
+        :date="date"
         />
-      <Map :data="covid_confirmed" :date="hover_date" style="grid-area: map"/>
+      <Map :data="covid_confirmed" :date="date" style="grid-area: map"/>
       <!--
       <TwitterFeed :data="twitter" :date="date" style="grid-area: side1"/>
       -->
       <NewsFeed id='side-area' 
       :news1="news_us" 
       :news2="news_china"
-      :date="hover_date" 
-      style="grid-area: side"/>
+      :date="date" 
+      style="grid-area: side; display: none;"/>
       <RegionDetail style="grid-area: us" class="main-area"/>
       <RegionDetail style="grid-area: cn" class="main-area"/>
       <!--<WordCloud :data="null" style="grid-area: cloud"/>-->
@@ -76,9 +76,9 @@ export default {
       covid_recovered: null,
     }
   },
-  watch: {
+  computed: {
     date() {
-      console.log(this.date)
+      return this.selected_date == null ? this.hover_date : this.selected_date
     }
   },
   created() {
@@ -113,27 +113,22 @@ export default {
         this.covid_recovered = data
       })
   },
-  mounted() {
-      document.getElementsByClassName('main-area').forEach(element => {
-        element.style.display = 'none'
-      })
-  },
   methods: {
     onTimeControlDateSelected(date) {
       this.selected_date = date
-      document.getElementById('main').classList.add('main-content-collapsed')
-      document.getElementById('side-area').style.display = 'none'
-      document.getElementsByClassName('main-area').forEach(element => {
-        element.style.display = 'block'
-      })
+      // document.getElementById('main').classList.add('main-content-collapsed')
+      // document.getElementById('side-area').style.display = 'none'
+      // document.getElementsByClassName('main-area').forEach(element => {
+      //   element.style.display = 'block'
+      // })
     },
     onTimeControlDateUnSelected() {
       this.selected_date = null
-      document.getElementById('main').classList.remove('main-content-collapsed')
-      document.getElementById('side-area').style.display = 'block'
-      document.getElementsByClassName('main-area').forEach(element => {
-        element.style.display = 'none'
-      })
+      // document.getElementById('main').classList.remove('main-content-collapsed')
+      // document.getElementById('side-area').style.display = 'block'
+      // document.getElementsByClassName('main-area').forEach(element => {
+      //   element.style.display = 'none'
+      // })
     }
   }
 }
