@@ -6,7 +6,7 @@
         :spacing="0.8"
         :load-font="loadFont"
         font-family="Helvetica"
-        :font-size-ratio="10"
+        :font-size-ratio="7"
       />
     </div>
 </template>
