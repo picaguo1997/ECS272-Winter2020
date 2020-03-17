@@ -46,9 +46,7 @@ export default {
 <style scoped>
 #wordcloud {
     display: inline-block;
-    padding: 10px;
+    padding: 30px;
     overflow: hidden;
-    width: 800px;
-    height: 200px;
 }
 </style>

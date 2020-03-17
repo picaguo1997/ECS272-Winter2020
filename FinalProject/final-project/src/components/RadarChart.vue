@@ -254,7 +254,7 @@ export default {
 }
 .legend-labels {
   font-size: 12px;
-  fill: #000;
+  fill: rgb(48, 48, 48);
 }
 #radar-chart-container-container {
   height:100%;

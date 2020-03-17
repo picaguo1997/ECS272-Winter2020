@@ -475,6 +475,7 @@ export default {
 .c3-selected-circle {
   r: 3;
   stroke:#181818;
+  fill: #181818;
 }
 
  /* .c3-texts .c3-texts-confirmed {

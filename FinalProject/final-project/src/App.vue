@@ -159,7 +159,7 @@ export default {
 
 <style>
 body {
-  background-color: #e8e9ec;
+  background-color: #ECECEC;
 }
 
 #app {
@@ -197,8 +197,8 @@ h3 {
   grid-template-areas:
   ". control control side ."
   ". control control map .";
-  grid-column-gap: 15px;
-  grid-row-gap: 15px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
   padding: 0px 0 0 0;
 }
 
@@ -216,7 +216,7 @@ h3 {
   background-color: #ffffff;
   border-radius: 4px;
   -webkit-box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.1);
 }
 
 </style>
