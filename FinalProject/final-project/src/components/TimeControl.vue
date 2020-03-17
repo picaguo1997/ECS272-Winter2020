@@ -86,12 +86,12 @@ export default {
 
       const y_confirmed = this.getInfectionDataPoints(
         this.data_confirmed,
-        "confirmed"
+        "Confirmed Cases"
       );
-      const y_deaths = this.getInfectionDataPoints(this.data_deaths, "deaths");
+      const y_deaths = this.getInfectionDataPoints(this.data_deaths, "Deaths");
       const y_recovered = this.getInfectionDataPoints(
         this.data_recovered,
-        "recovered"
+        "Recoveries"
       );
 
       this.width = document.getElementById("time-control-chart").offsetWidth;
@@ -132,9 +132,11 @@ export default {
             this.$emit("onunselected");
           },
           colors: {
-            confirmed: "#a3a3a3",
-            recovered: "#a3a3a3",
-            deaths: "#a3a3a3"
+            [this.label_news1]: "transparent",
+            [this.label_news2]: "transparent",
+            'Confirmed Cases': "#a3a3a3",
+            'Recoveries': "#a3a3a3",
+            'Deaths': "#a3a3a3",
           },
           color: (color, d) => {
             if (
@@ -157,27 +159,27 @@ export default {
             //return d3.interpolateSpectral(val)
             const colorRange = ["#ffd500", "#b50600"];
 
+            // TODO This is hardcoded
             const col = d3
               .scaleLinear()
-              .domain([0.05, 0.3])
+              .domain([0.1, 0.3])
               .interpolate(d3.interpolateHcl)
               .range([d3.hcl(colorRange[1]), d3.hcl(colorRange[0])]);
-            console.log(val);
             return col(val);
           },
           xs: {
             [this.label_news1]: "x_news1",
             [this.label_news2]: "x_news2",
-            confirmed: "x_infections",
-            deaths: "x_infections",
-            recovered: "x_infections"
+            'Confirmed Cases': "x_infections",
+            'Recoveries': "x_infections",
+            'Deaths': "x_infections",
           },
           axes: {
             [this.label_news1]: "y2",
             [this.label_news2]: "y2",
-            confirmed: "y",
-            deaths: "y",
-            recovered: "y"
+            'Confirmed Cases': "y",
+            'Recoveries': "y",
+            'Deaths': "y",
           },
           columns: [
             x_news1,
@@ -192,9 +194,9 @@ export default {
           types: {
             [this.label_news1]: "bar",
             [this.label_news2]: "bar",
-            confirmed: "spline",
-            deaths: "spline",
-            recovered: "spline"
+            'Confirmed Cases': "spline",
+            'Recoveries': "spline",
+            'Deaths': "spline",
           },
           labels: false // for showing labels over the splines
         },

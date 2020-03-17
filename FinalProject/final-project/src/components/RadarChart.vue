@@ -28,7 +28,9 @@ export default {
       chart_data: null,
       chart_ready: false,
       width: 0,
-      height: 0
+      height: 0,
+      padding: 175,
+      max_value: 1,
     };
   },
   computed: {
@@ -47,15 +49,18 @@ export default {
     dataReady() {
       this.preprocessData();
 
+      //TODO This is hardcoded
+      this.max_value = 0.65
+
       this.chart_ready = true
     }
   },
   methods: {
     init() {
-      this.width = document.getElementById("radar-chart-container-container").offsetWidth - 200;
+      this.width = document.getElementById("radar-chart-container-container").offsetWidth - this.padding;
       this.height = document.getElementById(
         "radar-chart-container-container"
-      ).offsetHeight - 200;
+      ).offsetHeight - this.padding;
 
       const data = this.chart_data[this.date.getTime()]
 
@@ -64,7 +69,7 @@ export default {
       const options = {
         w: chartsize,
         h: chartsize,
-        //maxValue: 1,
+        maxValue: this.max_value,
         facet: false,
         levels: 4,
         levelScale: 0.85,
@@ -77,10 +82,10 @@ export default {
         showLegend: true,
         showVertices: true,
         showPolygons: true,
-        translateX: 100,
-        translateY: 100,
-        paddingX: 200,
-        paddingY: 200,
+        translateX: this.padding/2,
+        translateY: this.padding/2,
+        paddingX: this.padding,
+        paddingY: this.padding,
         colors: d3.scaleOrdinal().range(['#0092FF', '#E30000']),
       };
 
