@@ -87,6 +87,11 @@ export default {
                 this.selected_date = null
                 this.$emit('onunselected')
               },
+              colors: {
+                confirmed: '#a3a3a3',
+                recovered: '#a3a3a3',
+                deaths: '#a3a3a3',
+              },
               color: (color, d) => {
                 if (!d.id || (d.id != this.label_news1 && d.id != this.label_news2)) {
                   return color
@@ -440,9 +445,17 @@ export default {
   font-size: 11px;
 }
 
-.c3-line-deaths {
-  fill:#3f3f3f;
-  stroke-width: 15px;
+/* .c3-line-deaths {
+  stroke-width: 1.1px;
+} */
+
+.c3-chart-lines .c3-circles .c3-circle {
+    display: none;
+}
+
+/* change circle radius */
+.c3-selected-circle {
+  r: 3;
 }
 
  /* .c3-texts .c3-texts-confirmed {

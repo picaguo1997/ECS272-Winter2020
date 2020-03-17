@@ -167,7 +167,7 @@ h3 {
   grid-template-areas: 
   ". control control side ."
   ". control control map .";
-  grid-column-gap: 10px;
+  grid-column-gap: 15px;
   grid-row-gap: 15px;
   padding: 0px 0 0 0;
 }

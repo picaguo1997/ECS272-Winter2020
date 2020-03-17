@@ -61,8 +61,8 @@ export default {
       const data = this.chart_data[this.date.getTime()]
 
       const options = {
-        w: 200,
-        h: 200,
+        w: this.width / 2,
+        h: this.width / 2,
         maxValue: 2,
         facet: false,
         levels: 4,
@@ -217,35 +217,36 @@ export default {
 
 }
 .verticesTooltip {
+  
 }
 .level-lines {
-  stroke: #fff;
+  stroke: #979797;
   stroke-width: 1px;
 }
 .level-labels {
-  fill: #ccc;
+  fill: #484848;
   font-size: 8px;
 }
 .axis-lines {
-  stroke: #fff;
+  stroke: #979797;
   stroke-width: 1px;
 }
 .axis-labels {
-  fill: #fff;
+  fill: #484848;
   font-size: 12px;
 }
 .polygon-vertices {
-  fill-opacity: 0.6;
+  fill-opacity: 0;
 }
 .polygon-areas {
-  fill-opacity: 0.2;
+  fill-opacity: 0;
 }
 .legend-tiles {
-  fill-opacity: 0.3;
+  fill-opacity: 1;
 }
 .legend-labels {
   font-size: 12px;
-  fill: #fff;
+  fill: #000;
 }
 #radar-chart-container-container {
   height:100%;
