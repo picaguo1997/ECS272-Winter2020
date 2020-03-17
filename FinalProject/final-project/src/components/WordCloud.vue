@@ -12,7 +12,6 @@
 </template>
 
 <script>
-//import wordcloud from 'vue-wordcloud'
 import VueWordCloud from 'vuewordcloud'
 import FontFaceObserver from 'fontfaceobserver'
 
