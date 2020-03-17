@@ -65,7 +65,10 @@ export default {
       this.chart = c3.generate({
           bindto: '#time-control-chart',
           padding: {
-            top: 10,
+            top: 40,
+            bottom: 10,
+            left: 50,
+            right: 50,
           },
           size: {
             height: this.height,
@@ -425,7 +428,7 @@ export default {
   fill-opacity: 0.5;
 }
 .c3 .c3-axis path, .c3 .c3-axis line {
-  stroke: #3f3f3f;
+  stroke: #919191;
 }
 .c3 .c3-axis text {
   stroke: #3f3f3f;
